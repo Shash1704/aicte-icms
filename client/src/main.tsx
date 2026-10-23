@@ -2,10 +2,13 @@ import { StrictMode, Suspense, lazy, useEffect, useState, type ReactNode } from 
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import '@fontsource-variable/lexend';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/bodoni-moda/opsz.css';
+import '@fontsource-variable/bodoni-moda/opsz-italic.css';
 import './index.css';
 import { AuthProvider, LiveProvider, ToastProvider, useAuth, useTheme } from './lib/context';
 import Layout, { LogoMark } from './components/Layout';
+import { Seascape } from './components/Illustrations';
 import Login from './pages/Login';
 import { Spinner } from './components/ui';
 import { DEMO } from './lib/api';
@@ -25,12 +28,7 @@ const Admin = lazy(() => import('./pages/Admin'));
 const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 15_000, refetchOnWindowFocus: true, retry: 1 } } });
 
 function Backdrop() {
-  return (
-    <div className="backdrop" aria-hidden>
-      <div className="orb" style={{ width: 520, height: 520, right: -120, top: -140, background: 'radial-gradient(circle, rgba(255,128,40,.55), transparent 70%)' }} />
-      <div className="orb" style={{ width: 420, height: 420, left: -140, bottom: -120, background: 'radial-gradient(circle, rgba(240,110,40,.35), transparent 70%)', animationDelay: '-9s' }} />
-    </div>
-  );
+  return <div className="backdrop" aria-hidden><Seascape /></div>;
 }
 
 /** Demo build: waits for the in-browser server (and first-visit data generation) before rendering the app. */

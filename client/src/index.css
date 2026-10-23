@@ -1,57 +1,121 @@
 @import "tailwindcss";
 
 /*
-  Visual language: soft cards on a charcoal app shell with a pale-yellow accent, one yellow and
-  one light-grey highlight card, lavender as a small secondary accent. Dark is the default.
-  Panels use .glass (a solid card; the name is historical); nested tiles use .tile.
+  Visual language: a calm editorial look. A cream panel floats over a painted dusk seascape;
+  headings use a high-contrast serif, labels are small spaced-out capitals, controls are
+  outlined or charcoal pills, and a few "photo" cards (sunset, sea) carry the highlights.
+  Light is the default. Panels use .glass (a solid card; the name is historical).
   Colors are tokens so both themes share one codebase.
 */
 
-/* ---------- Dark (default): charcoal with a pale-yellow accent ---------- */
+/* ---------- Light (default): cream and charcoal ---------- */
 :root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --canvas: #b9c0bb;
+  --sidebar: #ebe7df;
+  --main: #ebe7df;
+  --page: #ebe7df;
+  --panel: #f5f2ec;
+  --panel-solid: #f5f2ec;
+  --popover: rgba(246, 243, 237, 0.98);
+  --surface-1: rgba(31, 30, 27, 0.035);
+  --surface-2: rgba(31, 30, 27, 0.06);
+  --surface-3: rgba(31, 30, 27, 0.1);
+  --ink: #1f1e1b;
+  --ink-2: #4a4741;
+  --ink-3: #736f67;
+  --muted: #8d887e;
+  --hairline: rgba(31, 30, 27, 0.1);
+  --axis: rgba(31, 30, 27, 0.22);
+  --border: rgba(31, 30, 27, 0.08);
+  --highlight: rgba(255, 255, 255, 0.6);
+  --shadow: 0 1px 2px rgba(31, 30, 27, 0.04);
+  --shell-shadow: 0 40px 90px -40px rgba(20, 30, 30, 0.55);
+  --accent: #1f1e1b;
+  --accent-strong: #000000;
+  --accent-ink: #f3efe7;
+  --accent-soft: rgba(31, 30, 27, 0.07);
+  --accent-text: #1f1e1b;
+  --sun: #c0612a;
+  --lavender: #ddd0b8;
+  --lavender-ink: #3b3124;
+  --hl-yellow: #f0b27a;
+  --hl-yellow-ink: #1f1e1b;
+  --hl-grey: #3e5955;
+  --hl-grey-ink: #f3efe7;
+  --select: rgba(31, 30, 27, 0.05);
+  --select-border: #1f1e1b;
+  --nav: #ebe7df;
+  --nav-ink: #4a4741;
+  --nav-active: #1f1e1b;
+
+  /* two-series pair (validated on #f7f4ee: received vs disposed) */
+  --b1: #00869f;
+  --b2: #c0612a;
+
+  /* categorical: one fixed hue per Bureau/Cell (validated light steps) */
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --s5: #e87ba4; --s6: #008300; --s7: #6250d6; --s8: #e34948;
+
+  --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
+  --good-text: #006300; --warning-text: #7a4f00; --serious-text: #9a3b15; --critical-text: #b42828;
+  --good-soft: rgba(12, 163, 12, 0.12); --warning-soft: rgba(250, 178, 25, 0.18); --serious-soft: rgba(236, 131, 90, 0.16); --critical-soft: rgba(208, 59, 59, 0.12);
+  --info: #2a78d6; --info-soft: rgba(42, 120, 214, 0.12); --info-text: #1c5cab;
+
+  --q1: #86b6ef; --q2: #5598e7; --q3: #2a78d6; --q4: #1c5cab; --q5: #0d366b;
+
+  /* painted seascape behind the panel */
+  --sky-1: #a7b6b6; --sky-2: #d3d5cb; --sky-3: #eadfcb;
+  --mtn-1: #9aa6a1; --mtn-2: #66756f;
+  --sea-1: #6c827d; --sea-2: #3b514d; --foam: #eef2ec;
+}
+
+/* ---------- Dark: warm night ---------- */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --canvas: #5b616a;
-  --sidebar: #1e1e20;
-  --main: #262628;
-  --page: #262628;
-  --panel: #313134;
-  --panel-solid: #313134;
-  --popover: rgba(50, 50, 53, 0.98);
-  --surface-1: rgba(255, 255, 255, 0.045);
-  --surface-2: rgba(255, 255, 255, 0.07);
-  --surface-3: rgba(255, 255, 255, 0.12);
-  --ink: #f4f4f2;
-  --ink-2: #c9c9c6;
-  --ink-3: #9d9d9a;
-  --muted: #7d7d7a;
-  --hairline: rgba(255, 255, 255, 0.08);
-  --axis: rgba(255, 255, 255, 0.15);
-  --border: rgba(255, 255, 255, 0.07);
+  --canvas: #161b1c;
+  --sidebar: #1d1c19;
+  --main: #1d1c19;
+  --page: #1d1c19;
+  --panel: #26251f;
+  --panel-solid: #26251f;
+  --popover: rgba(40, 39, 34, 0.98);
+  --surface-1: rgba(255, 250, 240, 0.04);
+  --surface-2: rgba(255, 250, 240, 0.07);
+  --surface-3: rgba(255, 250, 240, 0.12);
+  --ink: #eee9df;
+  --ink-2: #c8c2b6;
+  --ink-3: #9a9488;
+  --muted: #7d786d;
+  --hairline: rgba(255, 250, 240, 0.09);
+  --axis: rgba(255, 250, 240, 0.2);
+  --border: rgba(255, 250, 240, 0.07);
   --highlight: rgba(255, 255, 255, 0.03);
-  --shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7), 0 2px 6px -3px rgba(0, 0, 0, 0.4);
-  --accent: #f6e77d;
-  --accent-strong: #ecd957;
-  --accent-ink: #1b1b1c;
-  --accent-soft: rgba(246, 231, 125, 0.14);
-  --accent-text: #f6e77d;
-  --lavender: #c9c3f2;
-  --lavender-ink: #26233f;
-  --hl-yellow: #f6e77d;
-  --hl-yellow-ink: #1b1b1c;
-  --hl-grey: #d8d8d6;
-  --hl-grey-ink: #1b1b1c;
-  --select: rgba(246, 231, 125, 0.08);
-  --select-border: #f6e77d;
-  --nav: #1e1e20;
-  --nav-ink: #c9c9c6;
-  --nav-active: #f6e77d;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shell-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.8);
+  --accent: #eee9df;
+  --accent-strong: #ffffff;
+  --accent-ink: #1d1c19;
+  --accent-soft: rgba(238, 233, 223, 0.1);
+  --accent-text: #eee9df;
+  --sun: #d07a3e;
+  --lavender: #5a4e3c;
+  --lavender-ink: #f1e7d4;
+  --hl-yellow: #d07a3e;
+  --hl-yellow-ink: #1d1c19;
+  --hl-grey: #2f4744;
+  --hl-grey-ink: #eee9df;
+  --select: rgba(238, 233, 223, 0.06);
+  --select-border: #eee9df;
+  --nav: #1d1c19;
+  --nav-ink: #c8c2b6;
+  --nav-active: #eee9df;
 
-  /* two-series pair (validated on #313134: received vs disposed) */
-  --b1: #a99520;
-  --b2: #7d73d6;
+  /* two-series pair (validated on #26251f) */
+  --b1: #1a9aa8;
+  --b2: #d07a3e;
 
-  /* categorical: one fixed hue per Bureau/Cell (validated dark steps) */
   --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
   --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
 
@@ -62,61 +126,9 @@
 
   --q1: #184f95; --q2: #256abf; --q3: #3987e5; --q4: #6da7ec; --q5: #b7d3f6;
 
-  --backdrop: #5b616a;
-}
-
-/* ---------- Light: soft greys with the same yellow ---------- */
-:root[data-theme="light"] {
-  color-scheme: light;
-  --canvas: #cfd2d6;
-  --sidebar: #ffffff;
-  --main: #f1f1ef;
-  --page: #f1f1ef;
-  --panel: #ffffff;
-  --panel-solid: #ffffff;
-  --popover: rgba(255, 255, 255, 0.98);
-  --surface-1: rgba(20, 20, 22, 0.035);
-  --surface-2: rgba(20, 20, 22, 0.06);
-  --surface-3: rgba(20, 20, 22, 0.1);
-  --ink: #1b1b1c;
-  --ink-2: #48484a;
-  --ink-3: #6e6e70;
-  --muted: #8a8a8c;
-  --hairline: rgba(20, 20, 22, 0.08);
-  --axis: rgba(20, 20, 22, 0.18);
-  --border: rgba(20, 20, 22, 0.07);
-  --highlight: rgba(255, 255, 255, 0.9);
-  --shadow: 0 16px 34px -22px rgba(20, 20, 22, 0.28), 0 2px 6px -3px rgba(20, 20, 22, 0.1);
-  --accent: #f3e15c;
-  --accent-strong: #e6d13e;
-  --accent-ink: #1b1b1c;
-  --accent-soft: rgba(225, 200, 40, 0.2);
-  --accent-text: #6e5f00;
-  --lavender: #c9c3f2;
-  --lavender-ink: #26233f;
-  --hl-yellow: #f6e77d;
-  --hl-yellow-ink: #1b1b1c;
-  --hl-grey: #2a2a2c;
-  --hl-grey-ink: #f4f4f2;
-  --select: #fbf6cf;
-  --select-border: #d9c43a;
-  --nav: #ffffff;
-  --nav-ink: #48484a;
-  --nav-active: #f3e15c;
-
-  --b1: #a08c00;
-  --b2: #6c5ce7;
-
-  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
-  --s5: #e87ba4; --s6: #008300; --s7: #6250d6; --s8: #e34948;
-
-  --good-text: #006300; --warning-text: #7a4f00; --serious-text: #9a3b15; --critical-text: #b42828;
-  --good-soft: rgba(12, 163, 12, 0.12); --warning-soft: rgba(250, 178, 25, 0.18); --serious-soft: rgba(236, 131, 90, 0.16); --critical-soft: rgba(208, 59, 59, 0.12);
-  --info: #2a78d6; --info-soft: rgba(42, 120, 214, 0.12); --info-text: #1c5cab;
-
-  --q1: #86b6ef; --q2: #5598e7; --q3: #2a78d6; --q4: #1c5cab; --q5: #0d366b;
-
-  --backdrop: #cfd2d6;
+  --sky-1: #121a1e; --sky-2: #253036; --sky-3: #4d4337;
+  --mtn-1: #222b2c; --mtn-2: #151c1d;
+  --sea-1: #1c2a2b; --sea-2: #0d1515; --foam: rgba(225, 232, 226, 0.4);
 }
 
 @theme inline {
@@ -132,6 +144,7 @@
   --color-hl-yellow-ink: var(--hl-yellow-ink);
   --color-hl-grey: var(--hl-grey);
   --color-hl-grey-ink: var(--hl-grey-ink);
+  --color-sun: var(--sun);
   --color-panel: var(--panel);
   --color-panel-solid: var(--panel-solid);
   --color-popover: var(--popover);
@@ -167,7 +180,8 @@
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
   --color-info-text: var(--info-text);
-  --font-sans: "Lexend Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Bodoni Moda Variable", "Didot", "Bodoni 72", Georgia, serif;
 }
 
 html, body, #root { min-height: 100%; }
@@ -175,20 +189,46 @@ body {
   background: var(--canvas);
   color: var(--ink);
   font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
 }
 
-/* App canvas behind the shell */
+/* Headings use the display serif everywhere (unlayered, so it wins over utility weights). */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  font-optical-sizing: auto;
+}
+/* Table headers read as small spaced-out capitals, like the reference's labels. */
+thead th {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+/* Small capitals label ("SURF INSTRUCTOR" in the reference). */
+.eyebrow {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.font-display { font-family: var(--font-display); font-optical-sizing: auto; }
+
+/* Painted seascape behind everything */
 .backdrop {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: var(--backdrop);
   pointer-events: none;
+  overflow: hidden;
+  background: var(--sky-2);
 }
+.backdrop svg { width: 100%; height: 100%; display: block; }
 .orb { display: none; }
 
-/* Soft blurred fade behind the sticky top bar, so scrolled content never shows through its margins */
+/* Soft fade behind the sticky top bar, so scrolled content never shows through its margins */
 .header-fade::before {
   content: "";
   position: absolute;
@@ -207,7 +247,7 @@ body {
 .glass-pop {
   background: var(--popover);
   border: 1px solid var(--border);
-  box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 24px 50px -18px rgba(20, 20, 18, 0.35);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
@@ -216,18 +256,30 @@ body {
   border: 1px solid var(--hairline);
 }
 
-/* Active sidebar item that merges into the main panel (inverted corners above and below) */
-.nav-merge { background: var(--main); border-radius: 22px 0 0 22px; }
-.nav-merge::before, .nav-merge::after { content: ""; position: absolute; right: 0; width: 22px; height: 22px; pointer-events: none; }
-.nav-merge::before { top: -22px; background: radial-gradient(circle at 0 0, transparent 21.5px, var(--main) 22px); }
-.nav-merge::after { bottom: -22px; background: radial-gradient(circle at 0 100%, transparent 21.5px, var(--main) 22px); }
-
-/* Dashed countdown ring + dashed drop-zone styling used on the dashboard */
-.dash-ring { stroke-dasharray: 2 6; stroke-linecap: round; }
+/* "Photo" cards: painted gradients standing in for the reference's photographs (same in both themes). */
+.photo-sunset {
+  color: #fffaf2;
+  background:
+    linear-gradient(to bottom, transparent 58%, rgba(48, 26, 14, 0.5) 59%, rgba(26, 14, 8, 0.85) 100%),
+    radial-gradient(70% 55% at 70% 34%, #ffe2ad 0%, #f4b066 18%, #d27a37 42%, #9a4f24 70%, #5a3019 100%);
+}
+.photo-sea {
+  color: #f6f3ec;
+  background:
+    linear-gradient(to bottom, transparent 46%, rgba(255, 255, 255, 0.35) 46.5%, transparent 48%),
+    linear-gradient(180deg, #c4cfca 0%, #9cb0ab 30%, #7c958f 46%, #4f6a66 62%, #2c4441 100%);
+}
+.photo-sunset .photo-tag, .photo-sea .photo-tag {
+  background: rgba(20, 16, 12, 0.32);
+  color: #fffaf2;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.photo-shade { text-shadow: 0 1px 12px rgba(30, 18, 10, 0.35); }
 
 .tnum { font-variant-numeric: tabular-nums; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
-::selection { background: var(--accent-soft); }
+::selection { background: rgba(192, 97, 42, 0.22); }
 select option { background: var(--panel-solid); color: var(--ink); }
 
 /* Recharts */
@@ -238,12 +290,8 @@ select option { background: var(--panel-solid); color: var(--ink); }
 
 @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(12,163,12,.5); } 70% { box-shadow: 0 0 0 6px rgba(12,163,12,0); } 100% { box-shadow: 0 0 0 0 rgba(12,163,12,0); } }
 .live-dot { animation: pulse-ring 2s infinite; }
-@keyframes flash { from { background: var(--accent-soft); } to { background: transparent; } }
+@keyframes flash { from { background: rgba(192, 97, 42, 0.16); } to { background: transparent; } }
 .flash { animation: flash 2.5s ease-out; }
-
-/* Rail tooltips */
-.rail-tip { pointer-events: none; opacity: 0; transform: translateX(-4px); transition: opacity .15s, transform .15s; }
-.rail-item:hover .rail-tip, .rail-item:focus-visible .rail-tip { opacity: 1; transform: translateX(0); }
 
 @media print {
   .no-print, .backdrop { display: none !important; }

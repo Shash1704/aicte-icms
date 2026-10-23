@@ -14,7 +14,7 @@ import { bureauColor, STATUS_COLOR } from '../lib/colors';
 import { BarsChart, ChartTooltip, LinesChart, useTokens } from '../components/charts';
 import { BureauChip, ErrorBox, SeverityBadge, Spinner } from '../components/ui';
 import { ScopeFilters, useFilterParams } from '../components/FilterBar';
-import { CoordinationIllustration, DeadlineIllustration } from '../components/Illustrations';
+import { DeadlineIllustration, Sunburst } from '../components/Illustrations';
 import type { CaseDetail, CaseRow, Severity } from '../lib/types';
 
 interface Metrics { received: number; disposed: number; pending: number; not_started: number; under_process: number; transferred_now: number; escalated_now: number; beyond_sla: number; approaching: number; disposed_in_sla: number; avg_disposal_days: number; avg_pending_age: number; transferred: number; escalated: number; disposal_rate: number; sla_compliance: number }
@@ -60,8 +60,11 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-[22px] font-medium tracking-tight text-ink">Monitoring Dashboard</h1>
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <div className="eyebrow text-ink-3">Integrated complaint monitoring</div>
+          <h1 className="mt-1.5 text-[32px] leading-none text-ink sm:text-[40px]">Dashboard</h1>
+        </div>
         <ScopeFilters />
       </div>
       <ErrorBox error={error} />
@@ -78,8 +81,8 @@ export default function Dashboard() {
 
           {/* Row 3: the numbers the problem statement asks for */}
           <section>
-            <h2 className="mb-3 text-lg font-normal text-ink-2">Overview</h2>
-            <div className="glass grid grid-cols-2 gap-1.5 rounded-[26px] p-2 lg:grid-cols-4">
+            <h2 className="mb-3 text-[22px] text-ink">Overview</h2>
+            <div className="glass grid grid-cols-2 gap-1.5 rounded-[24px] p-2 lg:grid-cols-4">
               <StripKpi to={caseLink({})} icon={<Files className="size-5" />} label="Total received" value={data.kpis.received} sub={`+${num(data.kpis.received_30d)} in 30 days`} />
               <StripKpi to={caseLink({ active: '1' })} icon={<Hourglass className="size-5" />} label="Pending" value={data.kpis.pending} sub={`${num(data.kpis.not_started)} yet to be acted upon`} accent />
               <StripKpi to={caseLink({ status: 'Disposed' })} icon={<CheckCircle2 className="size-5" />} label="Disposed" value={data.kpis.disposed} sub={`${pct(data.kpis.disposal_rate)} disposal rate`} />
@@ -95,13 +98,13 @@ export default function Dashboard() {
 
           {/* Row 4: statistics + goals/workload */}
           <div className="grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-            <section className="glass rounded-[26px] p-5">
+            <section className="glass rounded-[24px] p-5">
               <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-lg font-medium tracking-tight">Statistics</h2>
+                  <h2 className="text-[22px]">Statistics</h2>
                   <p className="text-xs text-ink-3">Complaints received vs disposed · last 12 months</p>
                 </div>
-                <Link to="/reports?type=performance" className="tile flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium text-ink-2 hover:text-ink">Performance report <ArrowUpRight className="size-3.5" /></Link>
+                <Link to="/reports?type=performance" className="eyebrow flex items-center gap-1.5 rounded-full border border-[var(--axis)] px-3.5 py-1.5 text-ink-2 hover:border-ink hover:text-ink">Performance report <ArrowUpRight className="size-3.5" /></Link>
               </div>
               <LinesChart height={270} data={data.trend} x="month" xFormatter={monthLabel}
                 series={[{ key: 'received', name: 'Received', color: 'var(--b1)' }, { key: 'disposed', name: 'Disposed', color: 'var(--b2)' }]} />
@@ -109,7 +112,7 @@ export default function Dashboard() {
             <div className="space-y-5">
               <section>
                 <div className="mb-3 flex items-center justify-between px-1">
-                  <h2 className="text-lg font-normal text-ink-2">Performance goals</h2>
+                  <h2 className="text-[22px] text-ink">Performance goals</h2>
                   <Link to="/reports?type=disposal" className="flex items-center gap-1 text-xs font-medium text-ink-3 hover:text-ink">All reports <Plus className="size-3.5" /></Link>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
@@ -120,7 +123,7 @@ export default function Dashboard() {
               </section>
               <section>
                 <div className="mb-3 flex items-center justify-between px-1">
-                  <h2 className="text-lg font-normal text-ink-2">Bureau/Cell workload</h2>
+                  <h2 className="text-[22px] text-ink">Bureau/Cell workload</h2>
                   <Link to={caseLink({ active: '1' })} className="text-xs font-medium text-ink-3 hover:text-ink">Open cases</Link>
                 </div>
                 <WorkloadCard bureaus={data.bureaus} received30={data.kpis.received_30d} disposed30={data.kpis.disposed_30d} onPick={(b) => nav(caseLink({ bureau: b, active: '1' }))} />
@@ -130,8 +133,8 @@ export default function Dashboard() {
 
           {/* Row 5: status by Bureau, regions, ageing */}
           <div className="grid gap-5 2xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-            <section className="glass rounded-[26px] p-5">
-              <h2 className="text-lg font-medium tracking-tight">Active cases by Bureau/Cell</h2>
+            <section className="glass rounded-[24px] p-5">
+              <h2 className="text-[22px]">Active cases by Bureau/Cell</h2>
               <p className="mb-3 text-xs text-ink-3">Current status · click a bar to open those cases</p>
               <BarsChart horizontal stacked height={250} data={data.bureaus.filter((b) => b.received)} x="code"
                 onClick={(row) => nav(caseLink({ bureau: String(row.code), active: '1' }))}
@@ -163,15 +166,15 @@ export default function Dashboard() {
               </div>
             </section>
             <div className="space-y-5">
-              <section className="glass rounded-[26px] p-5">
-                <h2 className="text-lg font-medium tracking-tight">Region-wise pending</h2>
+              <section className="glass rounded-[24px] p-5">
+                <h2 className="text-[22px]">Region-wise pending</h2>
                 <p className="mb-2 text-xs text-ink-3">Active and overdue cases</p>
                 <BarsChart horizontal height={240} data={data.regions.filter((r) => r.received)} x="code"
                   onClick={(row) => nav(caseLink({ region: String(row.code), active: '1' }))}
                   series={[{ key: 'pending', name: 'Active', color: 'var(--b1)' }, { key: 'beyond_sla', name: 'Overdue', color: 'var(--b2)' }]} />
               </section>
-              <section className="glass rounded-[26px] p-5">
-                <h2 className="text-lg font-medium tracking-tight">Pending case ageing</h2>
+              <section className="glass rounded-[24px] p-5">
+                <h2 className="text-[22px]">Pending case ageing</h2>
                 <p className="mb-2 text-xs text-ink-3">Days since receipt</p>
                 <BarsChart height={180} data={data.ageing} x="bucket" xFormatter={(v) => v.replace(' days', '')} series={[{ key: 'total', name: 'Pending cases', color: 'var(--b1)' }]} />
                 <p className="mt-1 text-xs text-ink-3">{num(data.ageing.slice(3).reduce((s, a) => s + Number(a.total), 0))} pending for more than 60 days · <Link className="font-medium text-accent-text hover:underline" to="/reports?type=ageing">Ageing report</Link></p>
@@ -181,13 +184,13 @@ export default function Dashboard() {
 
           {/* Row 6: institutions + activity */}
           <div className="grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-            <section className="glass rounded-[26px] p-5">
+            <section className="glass rounded-[24px] p-5">
               <div className="mb-3 flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-medium tracking-tight">Institution-wise case status</h2>
+                  <h2 className="text-[22px]">Institution-wise case status</h2>
                   <p className="text-xs text-ink-3">Institutions with the most active complaints</p>
                 </div>
-                <Link to="/institutions" className="tile rounded-full px-3.5 py-1.5 text-xs font-medium text-ink-2 hover:text-ink">All institutions</Link>
+                <Link to="/institutions" className="eyebrow rounded-full border border-[var(--axis)] px-3.5 py-1.5 text-ink-2 hover:border-ink hover:text-ink">All institutions</Link>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[600px] text-sm">
@@ -226,31 +229,50 @@ export default function Dashboard() {
 function GreetingCard({ data }: { data: DashboardData }) {
   const { user } = useAuth();
   const time = useClock();
+  const [today] = useState(() => new Date().toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'long', day: 'numeric', month: 'long' }));
   return (
-    <section className="glass relative flex min-h-[200px] items-center overflow-hidden rounded-[30px] p-6 sm:p-7">
-      <div className="relative z-[1] min-w-0 flex-1">
-        <h2 className="text-2xl font-normal tracking-tight text-ink sm:text-[26px]">{greeting()}, {firstName(user?.name)}</h2>
-        <p className="mt-1 text-sm text-ink-3">{data.kpis.not_started ? `${num(data.kpis.not_started)} new complaints are waiting for first action.` : 'Every complaint has been acted upon.'}</p>
-        <p className="mt-6 text-5xl font-light tracking-tight text-ink tnum sm:text-[56px]">{time}</p>
+    <section className="glass relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[24px] p-6 sm:p-7">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <div className="eyebrow text-ink-3">{today}</div>
+          <h2 className="mt-3 text-[34px] leading-[1.05] text-ink sm:text-[44px]">{greeting()}, {firstName(user?.name)}</h2>
+          <p className="mt-2 text-sm text-ink-3">{data.kpis.not_started ? `${num(data.kpis.not_started)} new complaints are waiting for first action.` : 'Every complaint has been acted upon.'}</p>
+        </div>
+        <div className="hidden shrink-0 flex-col items-center text-ink-2 sm:flex">
+          <Sunburst className="size-11" />
+          <span className="mt-2 font-display text-[30px] leading-none text-ink tnum">{time}</span>
+          <span className="eyebrow mt-1.5 text-[9.5px] text-ink-3">IST</span>
+        </div>
       </div>
-      <CoordinationIllustration className="pointer-events-none absolute -bottom-2 right-4 hidden h-[150px] w-auto md:block lg:hidden xl:right-8 xl:block xl:h-[190px]" />
+      <div className="mt-6 flex flex-wrap gap-2">
+        <Link to="/cases/new" className="eyebrow rounded-full bg-accent px-3.5 py-1.5 text-accent-ink hover:opacity-90">Register complaint</Link>
+        <Link to="/overlaps" className="eyebrow rounded-full border border-[var(--axis)] px-3.5 py-1.5 text-ink-2 hover:border-ink hover:text-ink">Overlaps</Link>
+        <Link to="/alerts" className="eyebrow rounded-full border border-[var(--axis)] px-3.5 py-1.5 text-ink-2 hover:border-ink hover:text-ink">Alerts</Link>
+        <Link to="/reports" className="eyebrow rounded-full border border-[var(--axis)] px-3.5 py-1.5 text-ink-2 hover:border-ink hover:text-ink">Reports</Link>
+      </div>
     </section>
   );
 }
 
-/** The reference's weather card, as the overlap headline. */
+/** The headline card, styled like the reference's photo cards (painted sunset, white type, dark pill). */
 function OverlapCard({ data }: { data: DashboardData }) {
   const o = data.overlaps;
   return (
-    <Link to="/overlaps" className="group flex min-h-[200px] flex-col justify-between rounded-[30px] bg-hl-yellow p-6 text-hl-yellow-ink shadow-[var(--shadow)] transition hover:-translate-y-0.5">
-      <div className="flex items-start justify-between">
-        <OverlapGlyph />
-        <span className="text-[52px] font-light leading-none tracking-tight tnum">{o.open}</span>
-      </div>
+    <Link to="/overlaps" className="photo-sunset group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[24px] p-5 transition hover:-translate-y-0.5">
       <div>
-        <div className="text-lg font-semibold">Overlapping colleges</div>
-        <div className="mt-0.5 text-xs opacity-70">{o.rbPgrc} with RB + PGRC · Coordination Required</div>
-        <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-black/85 px-3 py-1.5 text-xs font-medium text-[#f6e77d]">Review overlaps <ArrowRight className="size-3.5 transition group-hover:translate-x-0.5" /></div>
+        <div className="flex justify-end">
+          <span className="photo-tag eyebrow whitespace-nowrap rounded-full px-2.5 py-1 text-[8.5px] tracking-[0.12em]">Coordination required</span>
+        </div>
+        <span className="photo-shade -mt-1 block text-[52px] font-light leading-none tracking-tight tnum">{o.open}</span>
+        <div className="photo-shade mt-1 text-[22px] font-light leading-tight">Overlapping colleges</div>
+        <div className="eyebrow mt-1.5 text-[9.5px] opacity-90">{o.rbPgrc} with RB + PGRC</div>
+      </div>
+      <div className="flex items-end justify-between gap-2">
+        <span className="flex size-14 items-center justify-center rounded-full bg-[#f5f2ec] text-[#1f1e1b] shadow-lg"><OverlapGlyph /></span>
+        <span className="flex items-center gap-1">
+          <span className="rounded-full bg-[#1f1e1b] px-4 py-2 text-xs font-medium text-[#f5f2ec]">Review overlaps</span>
+          <span className="flex size-8 items-center justify-center rounded-full bg-[#1f1e1b] text-[#f5f2ec] transition group-hover:translate-x-0.5"><Plus className="size-4" /></span>
+        </span>
       </div>
     </Link>
   );
@@ -258,10 +280,10 @@ function OverlapCard({ data }: { data: DashboardData }) {
 
 function OverlapGlyph() {
   return (
-    <svg viewBox="0 0 72 56" className="h-14 w-auto" aria-hidden>
-      <circle cx="26" cy="28" r="19" fill="none" stroke="#1b1b1c" strokeWidth="5" />
-      <circle cx="46" cy="28" r="19" fill="none" stroke="#1b1b1c" strokeWidth="5" opacity=".35" />
-      <path d="M36 12.2a19 19 0 0 1 0 31.6 19 19 0 0 1 0-31.6z" fill="#1b1b1c" />
+    <svg viewBox="0 0 72 56" className="h-7 w-auto" aria-hidden>
+      <circle cx="26" cy="28" r="19" fill="none" stroke="currentColor" strokeWidth="4" />
+      <circle cx="46" cy="28" r="19" fill="none" stroke="currentColor" strokeWidth="4" opacity=".35" />
+      <path d="M36 12.2a19 19 0 0 1 0 31.6 19 19 0 0 1 0-31.6z" fill="#c0612a" />
     </svg>
   );
 }
@@ -280,8 +302,8 @@ function CaseFocus() {
   return (
     <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)_270px]">
       <section className="min-w-0">
-        <h2 className="mb-3 text-lg font-normal text-ink-2">Needs attention</h2>
-        <div className="glass space-y-3 rounded-[26px] p-4">
+        <h2 className="mb-3 text-[22px] text-ink">Needs attention</h2>
+        <div className="glass space-y-3 rounded-[24px] p-4">
           {list?.rows.map((c) => (
             <button key={c.id} onClick={() => setPicked(c.id)} onDoubleClick={() => nav(`/cases/${c.id}`)}
               className={clsx('flex w-full gap-3 rounded-[20px] border-2 p-3.5 text-left transition',
@@ -310,16 +332,16 @@ function CaseFocus() {
       </section>
 
       <section className="min-w-0">
-        <h2 className="mb-3 text-lg font-normal text-ink-2">Description</h2>
-        <div className="glass min-h-[300px] rounded-[26px] p-5">
+        <h2 className="mb-3 text-[22px] text-ink">Description</h2>
+        <div className="glass min-h-[300px] rounded-[24px] p-5">
           {!detail ? <Spinner /> : <CaseDescription c={detail} />}
         </div>
       </section>
 
       <section className="min-w-0 lg:col-span-2 xl:col-span-1">
-        <h2 className="mb-3 text-lg font-normal text-ink-2">Status</h2>
+        <h2 className="mb-3 text-[22px] text-ink">Status</h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
-          <div className="rounded-[26px] bg-hl-grey p-5 text-center text-hl-grey-ink shadow-[var(--shadow)]">{detail ? <Countdown c={detail} /> : <Spinner />}</div>
+          <div className="photo-sea rounded-[24px] p-5 text-center">{detail ? <Countdown c={detail} /> : <Spinner />}</div>
           <DeadlineIllustration className="mx-auto hidden h-[170px] w-auto sm:block" />
         </div>
       </section>
@@ -370,7 +392,7 @@ function CaseDescription({ c }: { c: CaseDetail }) {
         </Row>
         {last && (
           <div className="mt-2 flex items-start gap-2 rounded-2xl bg-surface-2 p-2.5 pl-11">
-            <span className="-ml-8 flex size-7 shrink-0 items-center justify-center rounded-full bg-lavender text-[10px] font-bold text-lavender-ink">{initials(last.actor_name)}</span>
+            <span className="-ml-8 flex size-7 shrink-0 items-center justify-center rounded-full bg-lavender text-[10px] font-semibold text-lavender-ink">{initials(last.actor_name)}</span>
             <span className="line-clamp-2 text-xs text-ink-2">{last.remarks}</span>
           </div>
         )}
@@ -401,10 +423,10 @@ function Countdown({ c }: { c: CaseDetail }) {
   const ticks = 40;
   const used = Math.min(1, Math.max(0, c.sla.age / total));
   const overdue = c.sla.daysLeft < 0;
-  const color = overdue ? 'var(--critical)' : c.sla.state === 'approaching' ? '#c98500' : 'currentColor';
+  const color = overdue ? '#ffb38a' : c.sla.state === 'approaching' ? '#ffd79a' : 'currentColor';
   return (
     <div>
-      <div className="text-sm font-medium opacity-75">{c.status}</div>
+      <div className="eyebrow opacity-85">{c.status}</div>
       <svg viewBox="0 0 140 140" className="mx-auto my-2 size-40" role="img" aria-label={`${Math.abs(c.sla.daysLeft)} days ${overdue ? 'overdue' : 'left'}`}>
         {Array.from({ length: ticks }, (_, i) => {
           const a = (i / ticks) * Math.PI * 2 - Math.PI / 2;
@@ -412,7 +434,7 @@ function Countdown({ c }: { c: CaseDetail }) {
           return <line key={i} x1={70 + Math.cos(a) * 54} y1={70 + Math.sin(a) * 54} x2={70 + Math.cos(a) * 62} y2={70 + Math.sin(a) * 62}
             stroke={on ? color : 'currentColor'} strokeOpacity={on ? 1 : 0.18} strokeWidth="3" strokeLinecap="round" />;
         })}
-        <text x="70" y="74" textAnchor="middle" fontSize="44" fontWeight="300" fill="currentColor">{Math.abs(c.sla.daysLeft)}</text>
+        <text x="70" y="76" textAnchor="middle" fontSize="46" fontWeight="400" fill="currentColor" style={{ fontFamily: 'var(--font-display)' }}>{Math.abs(c.sla.daysLeft)}</text>
         <text x="70" y="96" textAnchor="middle" fontSize="11" fill="currentColor" opacity=".65">{overdue ? 'Days overdue' : 'Days left'}</text>
       </svg>
       <div className="text-xs opacity-70">Due date: <span className="tnum">{ddmmyyyy(c.expected_disposal)}</span></div>
@@ -424,10 +446,10 @@ function StripKpi({ icon, label, value, sub, to, accent, critical }: { icon: Rea
   return (
     <Link to={to} className="group flex items-center gap-3 rounded-[20px] p-3 transition-colors hover:bg-surface-2 sm:p-4">
       <span className={clsx('flex size-12 shrink-0 items-center justify-center rounded-full',
-        accent ? 'bg-accent text-accent-ink shadow-[0_10px_24px_-10px_var(--accent)]' : critical ? 'bg-critical-soft text-critical-text' : 'bg-accent-soft text-accent-text')}>{icon}</span>
+        accent ? 'bg-accent text-accent-ink' : critical ? 'bg-critical-soft text-critical-text' : 'bg-accent-soft text-accent-text')}>{icon}</span>
       <span className="min-w-0">
         <span className="block text-xs text-ink-3">{label}</span>
-        <span className={clsx('block text-2xl font-medium leading-tight tracking-tight tnum', critical && value > 0 && 'text-critical-text')}>{num(value)}</span>
+        <span className={clsx('block font-display text-[28px] leading-tight tnum', critical && value > 0 && 'text-critical-text')}>{num(value)}</span>
         <span className="block truncate text-[11px] text-ink-3">{sub}</span>
       </span>
     </Link>
@@ -436,9 +458,9 @@ function StripKpi({ icon, label, value, sub, to, accent, critical }: { icon: Rea
 
 function MiniKpi({ icon, label, value, sub, to }: { icon: React.ReactNode; label: string; value: number; sub: string; to: string }) {
   return (
-    <Link to={to} className="glass flex flex-col rounded-[22px] p-4 transition hover:-translate-y-0.5">
+    <Link to={to} className="glass flex flex-col rounded-[20px] p-4 transition hover:-translate-y-0.5">
       <span className="flex items-center justify-between text-xs text-ink-3">{label}<span className="flex size-7 items-center justify-center rounded-full bg-accent-soft text-accent-text">{icon}</span></span>
-      <span className="mt-1 text-xl font-medium tracking-tight tnum">{num(value)}</span>
+      <span className="mt-1 font-display text-2xl tnum">{num(value)}</span>
       <span className="truncate text-[11px] text-ink-3">{sub}</span>
     </Link>
   );
@@ -447,11 +469,11 @@ function MiniKpi({ icon, label, value, sub, to }: { icon: React.ReactNode; label
 function Goal({ label, value }: { label: string; value: number | null }) {
   const v = Math.max(0, Math.min(100, value ?? 0));
   return (
-    <div className="glass flex min-h-[128px] flex-col justify-between rounded-[22px] p-4">
-      <div className="text-[26px] font-light leading-none tracking-tight tnum">{value === null ? '—' : `${Math.round(v)}%`}</div>
+    <div className="glass flex min-h-[128px] flex-col justify-between rounded-[20px] p-4">
+      <div className="text-[30px] font-light leading-none tracking-tight tnum">{value === null ? '—' : `${Math.round(v)}%`}</div>
       <div>
         <div className="h-2 overflow-hidden rounded-full bg-surface-3" role="progressbar" aria-valuenow={v} aria-valuemin={0} aria-valuemax={100} aria-label={label}>
-          <div className="h-full rounded-full bg-accent" style={{ width: `${v}%` }} />
+          <div className="h-full rounded-full bg-sun" style={{ width: `${v}%` }} />
         </div>
         <div className="mt-2 text-xs text-ink-2">{label}</div>
       </div>
@@ -466,10 +488,10 @@ function WorkloadCard({ bureaus, received30, disposed30, onPick }: { bureaus: Da
   const peak = Math.max(0, ...rows.map((b) => b.pending));
   const net = received30 - disposed30;
   return (
-    <div className="glass flex min-h-[128px] gap-3 rounded-[22px] p-4">
+    <div className="glass flex min-h-[128px] gap-3 rounded-[20px] p-4">
       <div className="flex min-w-0 flex-col justify-between">
         <div className="text-xs text-ink-3">Active cases</div>
-        <div className="text-[26px] font-light leading-none tracking-tight tnum">{num(total)}</div>
+        <div className="font-display text-[30px] leading-none tnum">{num(total)}</div>
         <span className={clsx('w-fit rounded-full px-2 py-0.5 text-[11px] font-medium', net > 0 ? 'bg-warning-soft text-warning-text' : 'bg-good-soft text-good-text')}>
           {net > 0 ? '↑' : '↓'} {Math.abs(net)} net in 30 days
         </span>
@@ -479,7 +501,7 @@ function WorkloadCard({ bureaus, received30, disposed30, onPick }: { bureaus: Da
           <BarChart data={rows} margin={{ top: 4, right: 0, left: 0, bottom: 0 }} barCategoryGap="18%">
             <defs>
               <pattern id="wl-stripes" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <rect width="6" height="6" fill={c('var(--accent)')} /><rect width="2.2" height="6" fill="#ffffff" opacity=".45" />
+                <rect width="6" height="6" fill={c('var(--sun)')} /><rect width="2.2" height="6" fill="#ffffff" opacity=".4" />
               </pattern>
             </defs>
             <XAxis dataKey="code" tickLine={false} axisLine={false} tick={{ fill: c('var(--muted)'), fontSize: 10 }} interval={0} />
@@ -500,7 +522,7 @@ function ActivityList({ data }: { data: DashboardData }) {
   return (
     <section>
       <div className="mb-3 flex items-center justify-between px-1">
-        <h2 className="text-lg font-normal text-ink-2">Live activity</h2>
+        <h2 className="text-[22px] text-ink">Live activity</h2>
         <span className="flex items-center gap-1.5 text-xs text-ink-3"><span className={clsx('size-2 rounded-full', live.connected ? 'live-dot bg-good' : 'bg-muted')} />{live.connected ? 'Live' : 'Offline'}</span>
       </div>
       <div className="space-y-2.5">
@@ -538,8 +560,8 @@ function ActivityList({ data }: { data: DashboardData }) {
 function OverlapWatch({ data }: { data: DashboardData }) {
   if (!data.overlaps.top.length) return null;
   return (
-    <section className="glass rounded-[26px] p-5">
-      <h2 className="text-lg font-medium tracking-tight">Overlap watch</h2>
+    <section className="glass rounded-[24px] p-5">
+      <h2 className="text-[22px]">Overlap watch</h2>
       <p className="mb-3 text-xs text-ink-3">Parallel action by multiple Bureaus/Cells</p>
       <ul className="space-y-2">
         {data.overlaps.top.slice(0, 3).map((o) => (

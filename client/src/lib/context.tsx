@@ -119,16 +119,18 @@ export function LiveProvider({ children }: { children: ReactNode }) {
 // ---------------- Theme ----------------
 // "system" resolves to light/dark from the OS; data-theme is always set to a concrete value.
 export type ThemeChoice = 'light' | 'dark' | 'system';
+// New key for the cream redesign, so everyone starts on its light default.
+const THEME_KEY = 'icms.theme.v3';
 const resolveTheme = (t: ThemeChoice) => (t === 'system' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : t);
 
 export function useTheme() {
   const [theme, setThemeState] = useState<ThemeChoice>(() => {
-    try { return (localStorage.getItem('icms.theme') as ThemeChoice | null) ?? 'dark'; } catch { return 'dark'; }
+    try { return (localStorage.getItem(THEME_KEY) as ThemeChoice | null) ?? 'light'; } catch { return 'light'; }
   });
   useEffect(() => {
     const apply = () => document.documentElement.setAttribute('data-theme', resolveTheme(theme));
     apply();
-    try { localStorage.setItem('icms.theme', theme); } catch { /* ignore */ }
+    try { localStorage.setItem(THEME_KEY, theme); } catch { /* ignore */ }
     if (theme !== 'system') return;
     const mq = window.matchMedia('(prefers-color-scheme: light)');
     mq.addEventListener('change', apply);
