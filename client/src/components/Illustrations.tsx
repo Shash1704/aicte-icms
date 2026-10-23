@@ -1,98 +1,51 @@
-// Original artwork in the app's cream, sand, terracotta and sea palette (no external images).
+// Original monochrome artwork (no external images): soft greys with one charcoal shape.
 
-const v = (name: string) => ({ fill: `var(${name})` });
-
-/** Full-screen painted dusk seascape behind the app panel. Colors come from theme tokens. */
-export function Seascape() {
+/** Two case files from different Bureaus overlapping on one college: used in the dashboard banner. */
+export function OverlapIllustration({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden>
+    <svg viewBox="0 0 240 150" className={className} role="img" aria-label="Two case files overlapping on one college">
       <defs>
-        <linearGradient id="sc-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" style={{ stopColor: 'var(--sky-1)' }} />
-          <stop offset=".5" style={{ stopColor: 'var(--sky-2)' }} />
-          <stop offset=".7" style={{ stopColor: 'var(--sky-3)' }} />
-        </linearGradient>
-        <linearGradient id="sc-sea" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" style={{ stopColor: 'var(--sea-1)' }} />
-          <stop offset="1" style={{ stopColor: 'var(--sea-2)' }} />
-        </linearGradient>
-        <radialGradient id="sc-sun" cx=".5" cy=".5" r=".5">
-          <stop offset="0" style={{ stopColor: 'var(--sky-3)', stopOpacity: 0.95 }} />
-          <stop offset="1" style={{ stopColor: 'var(--sky-3)', stopOpacity: 0 }} />
-        </radialGradient>
-        <filter id="sc-blur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="14" /></filter>
-        <filter id="sc-soft"><feGaussianBlur stdDeviation="2.2" /></filter>
+        <linearGradient id="oi-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ffffff" /><stop offset="1" stopColor="#dcdce1" /></linearGradient>
+        <linearGradient id="oi-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#5a5a5f" /><stop offset="1" stopColor="#1d1d1f" /></linearGradient>
+        <filter id="oi-s" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="9" floodColor="#1d1d1f" floodOpacity=".22" /></filter>
       </defs>
-      <rect width="1440" height="900" fill="url(#sc-sky)" />
-      <circle cx="1060" cy="600" r="380" fill="url(#sc-sun)" />
-      {/* cloud streaks */}
-      <g filter="url(#sc-blur)" opacity=".5">
-        <ellipse cx="340" cy="150" rx="420" ry="26" fill="#ffffff" opacity=".35" />
-        <ellipse cx="980" cy="110" rx="520" ry="22" fill="#ffffff" opacity=".28" />
-        <ellipse cx="760" cy="250" rx="380" ry="18" fill="#ffffff" opacity=".25" />
-        <ellipse cx="200" cy="330" rx="300" ry="14" fill="#ffffff" opacity=".2" />
+      <circle cx="150" cy="78" r="66" fill="url(#oi-b)" />
+      <circle cx="58" cy="34" r="16" fill="#b8b8be" opacity=".7" />
+      <circle cx="214" cy="126" r="9" fill="#b8b8be" opacity=".6" />
+      {/* back file */}
+      <g filter="url(#oi-s)" transform="rotate(-10 120 80)">
+        <rect x="86" y="44" width="78" height="96" rx="12" fill="url(#oi-a)" />
+        <rect x="98" y="62" width="40" height="6" rx="3" fill="#1d1d1f" opacity=".7" />
+        <rect x="98" y="76" width="52" height="5" rx="2.5" fill="#1d1d1f" opacity=".18" />
+        <rect x="98" y="88" width="46" height="5" rx="2.5" fill="#1d1d1f" opacity=".18" />
       </g>
-      {/* mountains */}
-      <path d="M0 520c80-30 150-80 230-70 70 8 110 60 190 70 60 8 110-14 160-6l40 128H0z" style={v('--mtn-1')} opacity=".85" />
-      <path d="M0 470c50-10 90-40 140-34 60 8 90 70 150 96 50 22 110 30 150 108H0z" style={v('--mtn-2')} />
-      <path d="M1440 560c-70-40-120-90-190-84-60 6-90 50-150 64-50 12-90 4-130 22l-30 78h500z" style={v('--mtn-1')} opacity=".9" />
-      <path d="M1440 520c-40 4-80 30-120 60-40 30-90 40-120 60h240z" style={v('--mtn-2')} opacity=".9" />
-      {/* sea */}
-      <rect y="640" width="1440" height="260" fill="url(#sc-sea)" />
-      <rect y="639" width="1440" height="2" style={v('--foam')} opacity=".35" />
-      <g stroke="var(--foam)" strokeLinecap="round" fill="none" opacity=".35">
-        <path d="M120 690h220M520 676h160M900 702h260M1220 684h150" strokeWidth="2" />
-        <path d="M60 740h300M640 728h220M1040 752h300" strokeWidth="2.5" opacity=".7" />
+      {/* front file */}
+      <g filter="url(#oi-s)" transform="rotate(8 170 90)">
+        <rect x="132" y="50" width="78" height="96" rx="12" fill="url(#oi-a)" />
+        <rect x="144" y="68" width="40" height="6" rx="3" fill="#1d1d1f" opacity=".7" />
+        <rect x="144" y="82" width="52" height="5" rx="2.5" fill="#1d1d1f" opacity=".18" />
+        <rect x="144" y="94" width="46" height="5" rx="2.5" fill="#1d1d1f" opacity=".18" />
+        {/* overlap mark */}
+        <circle cx="163" cy="124" r="10" fill="none" stroke="#1d1d1f" strokeWidth="3" />
+        <circle cx="177" cy="124" r="10" fill="none" stroke="#1d1d1f" strokeWidth="3" opacity=".35" />
       </g>
-      {/* breaking wave */}
-      <path d="M380 860c120-50 260-92 420-96 120-3 200 30 270 76 40 26 90 34 140 30v30H380z" style={v('--sea-2')} opacity=".9" />
-      <path d="M760 790c60-20 140-22 200 8 40 20 70 54 120 66" stroke="var(--foam)" strokeWidth="10" strokeLinecap="round" fill="none" filter="url(#sc-soft)" opacity=".85" />
-      <path d="M700 812c80-26 170-28 240 6" stroke="var(--foam)" strokeWidth="4" strokeLinecap="round" fill="none" opacity=".5" />
-      <path d="M980 806c30 10 60 30 90 54" stroke="var(--foam)" strokeWidth="16" strokeLinecap="round" fill="none" filter="url(#sc-blur)" opacity=".6" />
     </svg>
   );
 }
 
-/** Thin radiating lines, like the reference's small sun mark. */
-export function Sunburst({ className }: { className?: string }) {
+/** Small paper-plane and clouds for the sidebar's "new complaint" card. */
+export function SendIllustration({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 48 48" className={className} aria-hidden fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
-      {Array.from({ length: 24 }, (_, i) => {
-        const a = (i / 24) * Math.PI * 2;
-        const r1 = i % 2 ? 8 : 4;
-        return <line key={i} x1={24 + Math.cos(a) * r1} y1={24 + Math.sin(a) * r1} x2={24 + Math.cos(a) * 22} y2={24 + Math.sin(a) * 22} />;
-      })}
-    </svg>
-  );
-}
-
-/** Hourglass on a calendar page: prescribed timelines. */
-export function DeadlineIllustration({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 200 190" className={className} role="img" aria-label="Hourglass and calendar">
+    <svg viewBox="0 0 160 110" className={className} aria-hidden>
       <defs>
-        <linearGradient id="di-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#f0b27a" /><stop offset="1" stopColor="#c0612a" /></linearGradient>
+        <linearGradient id="si-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ffffff" /><stop offset="1" stopColor="#c9c9cf" /></linearGradient>
       </defs>
-      <ellipse cx="100" cy="178" rx="78" ry="7" fill="#1f1e1b" opacity=".12" />
-      {/* calendar */}
-      <rect x="26" y="40" width="112" height="112" rx="16" fill="#3e5955" />
-      <rect x="26" y="40" width="112" height="30" rx="16" fill="url(#di-a)" />
-      <rect x="26" y="56" width="112" height="14" fill="url(#di-a)" />
-      <rect x="48" y="30" width="8" height="22" rx="4" fill="#ddd0b8" />
-      <rect x="108" y="30" width="8" height="22" rx="4" fill="#ddd0b8" />
-      {Array.from({ length: 12 }, (_, i) => (
-        <rect key={i} x={40 + (i % 4) * 22} y={82 + Math.floor(i / 4) * 20} width="14" height="12" rx="3"
-          fill={i === 6 ? '#f0b27a' : '#ffffff'} opacity={i === 6 ? 1 : 0.16} />
-      ))}
-      {/* hourglass */}
-      <g transform="translate(118 64)">
-        <rect x="0" y="0" width="56" height="9" rx="4.5" fill="#ddd0b8" />
-        <rect x="0" y="103" width="56" height="9" rx="4.5" fill="#ddd0b8" />
-        <path d="M8 9h40c0 22-14 30-14 47s14 25 14 47H8c0-22 14-30 14-47S8 31 8 9z" fill="#f5f2ec" opacity=".55" stroke="#8a7a62" strokeWidth="2" />
-        <path d="M15 22h26c-2 12-9 17-13 26-4-9-11-14-13-26z" fill="url(#di-a)" />
-        <path d="M28 56v30" stroke="#c0612a" strokeWidth="2" strokeDasharray="2 4" strokeLinecap="round" />
-        <path d="M12 101c4-14 10-19 16-21 6 2 12 7 16 21z" fill="url(#di-a)" />
-      </g>
+      <path d="M22 86c0-9 8-15 16-13 2-9 14-13 21-6 7-3 15 3 14 11H22z" fill="#ffffff" opacity=".9" />
+      <path d="M112 34c0-6 5-10 11-9 2-6 10-8 14-3 5-2 10 2 9 7h-34z" fill="#ffffff" opacity=".55" />
+      <path d="M40 60l96-38-30 72-20-24z" fill="url(#si-a)" />
+      <path d="M86 70l50-48-56 42z" fill="#8e8e93" />
+      <path d="M86 70l-2 22 12-12z" fill="#6e6e73" />
+      <path d="M30 98c20-4 34-12 48-26" stroke="#ffffff" strokeWidth="2" strokeDasharray="3 6" strokeLinecap="round" fill="none" opacity=".6" />
     </svg>
   );
 }

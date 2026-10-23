@@ -3,14 +3,14 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-do
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import {
-  BarChart3, Bell, Building2, FolderKanban, LayoutGrid, LogOut, Menu, Monitor, Moon, Search, ShieldCheck, Sun, X,
+  BarChart3, Bell, Building2, FilePlus2, FolderKanban, GitMerge, LayoutGrid, LogOut, Menu, Monitor, Moon, Search, ShieldCheck, Sun, X,
 } from 'lucide-react';
 import { api, DEMO, qs } from '../lib/api';
 import { useAuth, useLive, useLookups, useTheme, useToast } from '../lib/context';
 import { relTime } from '../lib/format';
 import type { Alert, OverlapGroup } from '../lib/types';
 import { BureauChip, StatusBadge, severityIcon } from './ui';
-import { bureauColor } from '../lib/colors';
+import { SendIllustration } from './Illustrations';
 
 export function LogoMark({ className }: { className?: string }) {
   return (
@@ -31,42 +31,34 @@ export default function Layout() {
   const { data: overlaps } = useQuery({ queryKey: ['overlaps', 'open-count'], queryFn: () => api<OverlapGroup[]>('/overlaps?status=open') });
   const { data: activeCount } = useQuery({ queryKey: ['cases', 'active-count'], queryFn: () => api<{ total: number }>('/cases?active=1&size=5').then((r) => r.total) });
 
-  const groups: NavGroup[] = [
-    { head: 'Overview', items: [{ to: '/', label: 'Dashboard', icon: LayoutGrid, end: true }] },
-    {
-      head: 'Cases',
-      items: [
-        { to: '/cases', label: 'All cases', end: true, badge: activeCount },
-        { to: '/cases/new', label: 'Register complaint' },
-        { to: '/overlaps', label: 'Overlaps', badge: overlaps?.length },
-        { to: '/alerts', label: 'Alerts', badge: alertSummary?.unread },
-      ],
-    },
-    { head: 'Records', items: [
-      { to: '/institutions', label: 'Institutions', icon: Building2 },
-      { to: '/reports', label: 'Reports', icon: BarChart3 },
-      ...(user?.role === 'admin' ? [{ to: '/admin', label: 'Administration', icon: ShieldCheck }] : []),
-    ] },
+  const items: NavLeaf[] = [
+    { to: '/', label: 'Dashboard', icon: LayoutGrid, end: true },
+    { to: '/cases', label: 'All cases', icon: FolderKanban, end: true, badge: activeCount },
+    { to: '/cases/new', label: 'Register complaint', icon: FilePlus2 },
+    { to: '/overlaps', label: 'Overlaps', icon: GitMerge, badge: overlaps?.length },
+    { to: '/alerts', label: 'Alerts', icon: Bell, badge: alertSummary?.unread },
+    { to: '/institutions', label: 'Institutions', icon: Building2 },
+    { to: '/reports', label: 'Reports', icon: BarChart3 },
+    ...(user?.role === 'admin' ? [{ to: '/admin', label: 'Administration', icon: ShieldCheck }] : []),
   ];
 
   return (
     <div className="min-h-screen bg-main lg:bg-transparent lg:p-5 xl:p-7">
-      <div id="app-shell" className="lg:flex lg:h-[calc(100vh-40px)] lg:overflow-hidden lg:rounded-[30px] lg:bg-sidebar lg:shadow-[var(--shell-shadow)] xl:h-[calc(100vh-56px)]">
-        <aside className="no-print hidden w-[244px] shrink-0 lg:block"><Sidebar groups={groups} /></aside>
-        <div className="no-print my-7 hidden w-px shrink-0 bg-[var(--axis)] lg:block" aria-hidden />
+      <div id="app-shell" className="lg:flex lg:h-[calc(100vh-40px)] lg:overflow-hidden lg:rounded-[28px] lg:bg-sidebar lg:shadow-[var(--shell-shadow)] xl:h-[calc(100vh-56px)]">
+        <aside className="no-print hidden w-[236px] shrink-0 border-r border-hairline lg:block"><Sidebar items={items} /></aside>
         {drawer && (
           <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal>
             <div className="absolute inset-0 bg-black/50" onClick={() => setDrawer(false)} />
-            <div className="absolute inset-y-0 left-0 w-[272px] bg-sidebar shadow-2xl"><Sidebar groups={groups} mobile onClose={() => setDrawer(false)} /></div>
+            <div className="absolute inset-y-0 left-0 w-[272px] bg-sidebar shadow-2xl"><Sidebar items={items} mobile onClose={() => setDrawer(false)} /></div>
           </div>
         )}
-        <div id="main-scroll" className="relative flex min-h-screen min-w-0 flex-1 flex-col bg-main lg:min-h-0 lg:overflow-y-auto lg:rounded-r-[30px]">
+        <div id="main-scroll" className="relative flex min-h-screen min-w-0 flex-1 flex-col bg-main lg:min-h-0 lg:overflow-y-auto lg:rounded-r-[28px]">
           <header className="header-fade no-print sticky top-0 isolate z-30 px-4 pb-2 pt-4 sm:px-7 sm:pt-5">
             <div className="flex items-center gap-2 sm:gap-3">
               <button className={clsx(iconBtn, 'lg:hidden')} onClick={() => setDrawer(true)} aria-label="Open menu"><Menu className="size-5" /></button>
               <LiveIndicator />
               <GlobalSearch />
-              <div className="ml-auto flex items-center gap-1">
+              <div className="ml-auto flex items-center gap-2">
                 <ThemeToggle />
                 <AlertBell summary={alertSummary} />
                 <UserMenu />
@@ -87,58 +79,38 @@ export default function Layout() {
 }
 
 type NavLeaf = { to: string; label: string; icon?: typeof LayoutGrid; end?: boolean; badge?: number };
-type NavGroup = { head?: string; items: NavLeaf[] };
-
-/** Quiet text sidebar: small-capital group labels, a charcoal pill for the active item, outlined count pills. */
-function Sidebar({ groups, mobile, onClose }: { groups: NavGroup[]; mobile?: boolean; onClose?: () => void }) {
-  const { user, logout } = useAuth();
-  const { meta } = useLookups();
-  const leaf = (n: NavLeaf) => (
-    <NavLink key={n.to} to={n.to} end={n.end}
-      className={({ isActive }) => clsx('mx-3 flex items-center gap-3 rounded-full px-4 py-2 text-[13.5px] transition-colors',
-        isActive ? 'bg-accent font-medium text-accent-ink' : 'text-ink-2 hover:bg-surface-2 hover:text-ink')}>
-      {({ isActive }) => (<>
-        <span className="flex-1">{n.label}</span>
-        {!!n.badge && <span className={clsx('min-w-8 rounded-full border px-2 py-px text-center text-[10.5px] font-medium tnum',
-          isActive ? 'border-white/25 text-accent-ink' : 'border-[var(--axis)] text-ink-3')}>{n.badge > 999 ? '999+' : n.badge}</span>}
-      </>)}
-    </NavLink>
-  );
+/** Icon sidebar like the reference: a charcoal pill marks the current page; a dark card offers the main action. */
+function Sidebar({ items, mobile, onClose }: { items: NavLeaf[]; mobile?: boolean; onClose?: () => void }) {
   return (
-    <div className="flex h-full flex-col pb-5 pt-7">
-      <div className="flex items-start justify-between pl-7 pr-4">
-        <Link to="/" className="block" aria-label="AICTE ICMS home">
-          <span className="block font-display text-[34px] leading-none tracking-tight">ICMS</span>
-          <span className="eyebrow mt-2 block text-[9.5px] text-ink-3">AICTE · Complaint monitoring</span>
+    <div className="flex h-full flex-col px-5 pb-5 pt-7">
+      <div className="flex items-center justify-between pl-2">
+        <Link to="/" className="flex items-center gap-2.5" aria-label="AICTE ICMS home">
+          <LogoMark className="size-9" />
+          <span className="leading-tight">
+            <span className="block text-[17px] font-bold tracking-tight">ICMS</span>
+            <span className="block text-[11px] text-ink-3">AICTE complaints</span>
+          </span>
         </Link>
         {mobile && <button className={iconBtn} onClick={onClose} aria-label="Close menu"><X className="size-5" /></button>}
       </div>
-      <nav aria-label="Main" className="mt-6 flex-1 overflow-y-auto pb-6">
-        {groups.map((g, gi) => (
-          <div key={gi} className="pt-4">
-            {g.head && <div className="eyebrow pb-1.5 pl-7 text-ink-3">{g.head}</div>}
-            <div className="space-y-0.5">{g.items.map((n) => leaf(n))}</div>
-          </div>
+      <nav aria-label="Main" className="mt-8 flex-1 space-y-1 overflow-y-auto pb-4">
+        {items.map((n) => (
+          <NavLink key={n.to} to={n.to} end={n.end}
+            className={({ isActive }) => clsx('flex items-center gap-3 rounded-[14px] px-4 py-2.5 text-[13.5px] transition-colors',
+              isActive ? 'bg-accent font-medium text-accent-ink shadow-[0_12px_24px_-14px_rgba(0,0,0,0.6)]' : 'text-ink-3 hover:bg-surface-2 hover:text-ink')}>
+            {({ isActive }) => (<>
+              {n.icon && <n.icon className="size-[18px] shrink-0" strokeWidth={isActive ? 2 : 1.7} />}
+              <span className="flex-1">{n.label}</span>
+              {!!n.badge && <span className={clsx('min-w-7 rounded-full px-1.5 py-px text-center text-[10.5px] font-medium tnum',
+                isActive ? 'bg-white/15 text-accent-ink' : 'bg-surface-2 text-ink-3')}>{n.badge > 999 ? '999+' : n.badge}</span>}
+            </>)}
+          </NavLink>
         ))}
-        <div className="pt-6">
-          <div className="eyebrow pb-2.5 pl-7 text-ink-3">Bureaus / Cells</div>
-          <div className="flex flex-wrap gap-1.5 pl-7 pr-5">
-            {meta?.bureaus.map((b) => (
-              <Link key={b.code} to={`/cases?bureau=${b.code}&active=1`} title={`${b.name}: active cases`}
-                className="flex items-center gap-1.5 rounded-full border border-[var(--axis)] px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-ink-2 transition hover:border-ink hover:text-ink">
-                <span className="size-1.5 rounded-full" style={{ background: bureauColor(b.code) }} />{b.code}
-              </Link>
-            ))}
-          </div>
-        </div>
       </nav>
-      <div className="mx-5 flex items-center gap-3 border-t border-[var(--axis)] pt-4">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-lavender text-xs font-semibold text-lavender-ink">{initials(user?.name)}</span>
-        <span className="min-w-0 flex-1 leading-tight">
-          <span className="block truncate text-[13px] font-medium">{user?.name}</span>
-          <span className="block truncate text-[11px] text-ink-3">{user?.designation}</span>
-        </span>
-        <button onClick={logout} className="rounded-full p-1.5 text-ink-3 hover:bg-surface-2 hover:text-ink" aria-label="Sign out" title="Sign out"><LogOut className="size-4" /></button>
+      <div className="relative mt-2 overflow-hidden rounded-[22px] bg-[#232326] px-4 pb-4 pt-5 text-center text-white">
+        <div className="text-[13px] font-medium leading-snug">Got a new complaint?<br /><span className="text-white/60">Register it in a minute.</span></div>
+        <SendIllustration className="mx-auto mt-2 h-[84px] w-auto" />
+        <Link to="/cases/new" className="mt-2 block rounded-[14px] bg-[#5b5b60] py-2.5 text-[13px] font-medium text-white transition hover:bg-[#6b6b70]">Register complaint</Link>
       </div>
     </div>
   );
@@ -147,16 +119,16 @@ function Sidebar({ groups, mobile, onClose }: { groups: NavGroup[]; mobile?: boo
 function LiveIndicator() {
   const { connected, lastAt, simulator } = useLive();
   return (
-    <div className="eyebrow hidden shrink-0 items-center gap-2 rounded-full border border-[var(--axis)] px-3.5 py-2 text-ink-2 md:flex" title={connected ? 'Receiving real-time updates' : 'Reconnecting…'}>
+    <div className="hidden shrink-0 items-center gap-2 rounded-[14px] bg-surface-2 px-3.5 py-2.5 text-xs font-medium text-ink-2 md:flex" title={connected ? 'Receiving real-time updates' : 'Reconnecting…'}>
       <span className={clsx('size-1.5 rounded-full', connected ? 'live-dot bg-good' : 'bg-muted')} />
       {connected ? 'Live' : 'Offline'}
-      {lastAt && <span className="normal-case tracking-normal text-ink-3">· {relTime(lastAt)}</span>}
-      {simulator && <span className="rounded-full bg-accent-soft px-1.5 normal-case tracking-normal text-accent-text">demo feed</span>}
+      {lastAt && <span className="font-normal text-ink-3">· {relTime(lastAt)}</span>}
+      {simulator && <span className="rounded-full bg-accent-soft px-1.5 text-accent-text">demo feed</span>}
     </div>
   );
 }
 
-const iconBtn = 'relative flex size-10 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-3 hover:text-ink';
+const iconBtn = 'relative flex size-10 items-center justify-center rounded-[14px] bg-surface-2 text-ink transition-colors hover:bg-surface-3';
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -220,7 +192,7 @@ function UserMenu() {
   return (
     <div className="relative" ref={ref}>
       <button onClick={() => setOpen((o) => !o)} aria-label="Account" aria-expanded={open}
-        className="ml-1 flex size-10 items-center justify-center rounded-full bg-lavender text-sm font-semibold text-lavender-ink">
+        className="ml-1 flex size-10 items-center justify-center rounded-[14px] bg-lavender text-sm font-semibold text-lavender-ink">
         {initials(user?.name)}
       </button>
       {open && (
@@ -259,11 +231,11 @@ function GlobalSearch() {
   const go = (path: string) => { setOpen(false); setQ(''); nav(path); };
   return (
     <div className="relative min-w-0 flex-1 sm:max-w-xl md:mx-auto" ref={ref}>
-      <Search className="pointer-events-none absolute left-0.5 top-1/2 size-4 -translate-y-1/2 text-ink-3" strokeWidth={1.6} />
+      <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-ink-2" strokeWidth={2} />
       <input value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)}
         onKeyDown={(e) => { if (e.key === 'Enter' && q.trim()) go(`/cases${qs({ q: q.trim() })}`); if (e.key === 'Escape') setOpen(false); }}
         placeholder="Search Case ID, institution, AICTE ID…" aria-label="Search"
-        id="global-search" className="h-10 w-full border-0 border-b border-[var(--axis)] bg-transparent pl-7 pr-2 text-sm text-ink placeholder:text-muted focus:border-ink focus:outline-none" />
+        id="global-search" className="h-11 w-full rounded-[14px] border border-transparent bg-surface-2 pl-11 pr-4 text-sm text-ink placeholder:text-ink-3 focus:border-[var(--axis)] focus:bg-panel focus:outline-none" />
       {open && debounced.length >= 2 && data && (
         <div className="glass-pop absolute left-0 right-0 top-12 z-40 overflow-hidden rounded-3xl p-2">
           {!!data.institutions.length && <div className="px-3 pb-1 pt-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted">Institutions</div>}

@@ -2,13 +2,13 @@ import { StrictMode, Suspense, lazy, useEffect, useState, type ReactNode } from 
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import '@fontsource-variable/inter';
-import '@fontsource-variable/bodoni-moda/opsz.css';
-import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/500.css';
+import '@fontsource/poppins/600.css';
+import '@fontsource/poppins/700.css';
 import './index.css';
 import { AuthProvider, LiveProvider, ToastProvider, useAuth, useTheme } from './lib/context';
 import Layout, { LogoMark } from './components/Layout';
-import { Seascape } from './components/Illustrations';
 import Login from './pages/Login';
 import { Spinner } from './components/ui';
 import { DEMO } from './lib/api';
@@ -28,7 +28,7 @@ const Admin = lazy(() => import('./pages/Admin'));
 const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 15_000, refetchOnWindowFocus: true, retry: 1 } } });
 
 function Backdrop() {
-  return <div className="backdrop" aria-hidden><Seascape /></div>;
+  return <div className="backdrop" aria-hidden />;
 }
 
 /** Demo build: waits for the in-browser server (and first-visit data generation) before rendering the app. */

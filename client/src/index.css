@@ -1,58 +1,58 @@
 @import "tailwindcss";
 
 /*
-  Visual language: a calm editorial look. A cream panel floats over a painted dusk seascape;
-  headings use a high-contrast serif, labels are small spaced-out capitals, controls are
-  outlined or charcoal pills, and a few "photo" cards (sunset, sea) carry the highlights.
-  Light is the default. Panels use .glass (a solid card; the name is historical).
-  Colors are tokens so both themes share one codebase.
+  Visual language: a calm monochrome workspace. White panels on a pale grey canvas, soft grey
+  tiles, bold geometric sans type, a charcoal pill for the active item, and dark "card" panels
+  with large curved shapes for the headline numbers. Colour is kept for meaning only
+  (status, overdue, Bureau identity). Light is the default.
+  Panels use .glass (a solid card; the name is historical). Colors are tokens shared by both themes.
 */
 
-/* ---------- Light (default): cream and charcoal ---------- */
+/* ---------- Light (default) ---------- */
 :root,
 :root[data-theme="light"] {
   color-scheme: light;
-  --canvas: #b9c0bb;
-  --sidebar: #ebe7df;
-  --main: #ebe7df;
-  --page: #ebe7df;
-  --panel: #f5f2ec;
-  --panel-solid: #f5f2ec;
-  --popover: rgba(246, 243, 237, 0.98);
-  --surface-1: rgba(31, 30, 27, 0.035);
-  --surface-2: rgba(31, 30, 27, 0.06);
-  --surface-3: rgba(31, 30, 27, 0.1);
-  --ink: #1f1e1b;
-  --ink-2: #4a4741;
-  --ink-3: #736f67;
-  --muted: #8d887e;
-  --hairline: rgba(31, 30, 27, 0.1);
-  --axis: rgba(31, 30, 27, 0.22);
-  --border: rgba(31, 30, 27, 0.08);
-  --highlight: rgba(255, 255, 255, 0.6);
-  --shadow: 0 1px 2px rgba(31, 30, 27, 0.04);
-  --shell-shadow: 0 40px 90px -40px rgba(20, 30, 30, 0.55);
-  --accent: #1f1e1b;
+  --canvas: #efeef3;
+  --sidebar: #ffffff;
+  --main: #ffffff;
+  --page: #ffffff;
+  --panel: #ffffff;
+  --panel-solid: #ffffff;
+  --popover: rgba(255, 255, 255, 0.98);
+  --surface-1: rgba(29, 29, 31, 0.035);
+  --surface-2: rgba(29, 29, 31, 0.055);
+  --surface-3: rgba(29, 29, 31, 0.1);
+  --ink: #1d1d1f;
+  --ink-2: #48484c;
+  --ink-3: #8e8e93;
+  --muted: #a1a1a6;
+  --hairline: rgba(29, 29, 31, 0.07);
+  --axis: rgba(29, 29, 31, 0.16);
+  --border: rgba(29, 29, 31, 0.05);
+  --highlight: rgba(255, 255, 255, 0.9);
+  --shadow: 0 22px 44px -28px rgba(30, 30, 45, 0.28), 0 1px 2px rgba(30, 30, 45, 0.04);
+  --shell-shadow: 0 40px 90px -50px rgba(30, 30, 50, 0.35);
+  --accent: #1d1d1f;
   --accent-strong: #000000;
-  --accent-ink: #f3efe7;
-  --accent-soft: rgba(31, 30, 27, 0.07);
-  --accent-text: #1f1e1b;
-  --sun: #c0612a;
-  --lavender: #ddd0b8;
-  --lavender-ink: #3b3124;
-  --hl-yellow: #f0b27a;
-  --hl-yellow-ink: #1f1e1b;
-  --hl-grey: #3e5955;
-  --hl-grey-ink: #f3efe7;
-  --select: rgba(31, 30, 27, 0.05);
-  --select-border: #1f1e1b;
-  --nav: #ebe7df;
-  --nav-ink: #4a4741;
-  --nav-active: #1f1e1b;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(29, 29, 31, 0.06);
+  --accent-text: #1d1d1f;
+  --sun: #1d1d1f;
+  --lavender: #e8e8ed;
+  --lavender-ink: #1d1d1f;
+  --hl-yellow: #f2f2f4;
+  --hl-yellow-ink: #1d1d1f;
+  --hl-grey: #2c2c2f;
+  --hl-grey-ink: #ffffff;
+  --select: rgba(29, 29, 31, 0.04);
+  --select-border: #1d1d1f;
+  --nav: #ffffff;
+  --nav-ink: #8e8e93;
+  --nav-active: #1d1d1f;
 
-  /* two-series pair (validated on #f7f4ee: received vs disposed) */
-  --b1: #00869f;
-  --b2: #c0612a;
+  /* two-series pair: separated by lightness (works in every colour-vision type), both >= 3:1 on white */
+  --b1: #1d1d1f;
+  --b2: #8e8e93;
 
   /* categorical: one fixed hue per Bureau/Cell (validated light steps) */
   --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
@@ -60,61 +60,55 @@
 
   --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
   --good-text: #006300; --warning-text: #7a4f00; --serious-text: #9a3b15; --critical-text: #b42828;
-  --good-soft: rgba(12, 163, 12, 0.12); --warning-soft: rgba(250, 178, 25, 0.18); --serious-soft: rgba(236, 131, 90, 0.16); --critical-soft: rgba(208, 59, 59, 0.12);
-  --info: #2a78d6; --info-soft: rgba(42, 120, 214, 0.12); --info-text: #1c5cab;
+  --good-soft: rgba(12, 163, 12, 0.1); --warning-soft: rgba(250, 178, 25, 0.16); --serious-soft: rgba(236, 131, 90, 0.14); --critical-soft: rgba(208, 59, 59, 0.1);
+  --info: #2a78d6; --info-soft: rgba(42, 120, 214, 0.1); --info-text: #1c5cab;
 
   --q1: #86b6ef; --q2: #5598e7; --q3: #2a78d6; --q4: #1c5cab; --q5: #0d366b;
-
-  /* painted seascape behind the panel */
-  --sky-1: #a7b6b6; --sky-2: #d3d5cb; --sky-3: #eadfcb;
-  --mtn-1: #9aa6a1; --mtn-2: #66756f;
-  --sea-1: #6c827d; --sea-2: #3b514d; --foam: #eef2ec;
 }
 
-/* ---------- Dark: warm night ---------- */
+/* ---------- Dark ---------- */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --canvas: #161b1c;
-  --sidebar: #1d1c19;
-  --main: #1d1c19;
-  --page: #1d1c19;
-  --panel: #26251f;
-  --panel-solid: #26251f;
-  --popover: rgba(40, 39, 34, 0.98);
-  --surface-1: rgba(255, 250, 240, 0.04);
-  --surface-2: rgba(255, 250, 240, 0.07);
-  --surface-3: rgba(255, 250, 240, 0.12);
-  --ink: #eee9df;
-  --ink-2: #c8c2b6;
-  --ink-3: #9a9488;
-  --muted: #7d786d;
-  --hairline: rgba(255, 250, 240, 0.09);
-  --axis: rgba(255, 250, 240, 0.2);
-  --border: rgba(255, 250, 240, 0.07);
+  --canvas: #0e0e10;
+  --sidebar: #18181a;
+  --main: #18181a;
+  --page: #18181a;
+  --panel: #212124;
+  --panel-solid: #212124;
+  --popover: rgba(38, 38, 41, 0.98);
+  --surface-1: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.065);
+  --surface-3: rgba(255, 255, 255, 0.12);
+  --ink: #f2f2f3;
+  --ink-2: #c7c7cc;
+  --ink-3: #8e8e93;
+  --muted: #74747a;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --axis: rgba(255, 255, 255, 0.18);
+  --border: rgba(255, 255, 255, 0.06);
   --highlight: rgba(255, 255, 255, 0.03);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shell-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.8);
-  --accent: #eee9df;
+  --shadow: 0 22px 44px -28px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shell-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9);
+  --accent: #f2f2f3;
   --accent-strong: #ffffff;
-  --accent-ink: #1d1c19;
-  --accent-soft: rgba(238, 233, 223, 0.1);
-  --accent-text: #eee9df;
-  --sun: #d07a3e;
-  --lavender: #5a4e3c;
-  --lavender-ink: #f1e7d4;
-  --hl-yellow: #d07a3e;
-  --hl-yellow-ink: #1d1c19;
-  --hl-grey: #2f4744;
-  --hl-grey-ink: #eee9df;
-  --select: rgba(238, 233, 223, 0.06);
-  --select-border: #eee9df;
-  --nav: #1d1c19;
-  --nav-ink: #c8c2b6;
-  --nav-active: #eee9df;
+  --accent-ink: #18181a;
+  --accent-soft: rgba(255, 255, 255, 0.08);
+  --accent-text: #f2f2f3;
+  --sun: #f2f2f3;
+  --lavender: #3a3a3e;
+  --lavender-ink: #f2f2f3;
+  --hl-yellow: #26262a;
+  --hl-yellow-ink: #f2f2f3;
+  --hl-grey: #2c2c2f;
+  --hl-grey-ink: #f2f2f3;
+  --select: rgba(255, 255, 255, 0.05);
+  --select-border: #f2f2f3;
+  --nav: #18181a;
+  --nav-ink: #8e8e93;
+  --nav-active: #f2f2f3;
 
-  /* two-series pair (validated on #26251f) */
-  --b1: #1a9aa8;
-  --b2: #d07a3e;
+  --b1: #f2f2f3;
+  --b2: #8e8e93;
 
   --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
   --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
@@ -125,10 +119,6 @@
   --info: #3987e5; --info-soft: rgba(57, 135, 229, 0.18); --info-text: #8dbdf3;
 
   --q1: #184f95; --q2: #256abf; --q3: #3987e5; --q4: #6da7ec; --q5: #b7d3f6;
-
-  --sky-1: #121a1e; --sky-2: #253036; --sky-3: #4d4337;
-  --mtn-1: #222b2c; --mtn-2: #151c1d;
-  --sea-1: #1c2a2b; --sea-2: #0d1515; --foam: rgba(225, 232, 226, 0.4);
 }
 
 @theme inline {
@@ -180,8 +170,7 @@
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
   --color-info-text: var(--info-text);
-  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Bodoni Moda Variable", "Didot", "Bodoni 72", Georgia, serif;
+  --font-sans: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 html, body, #root { min-height: 100%; }
@@ -189,44 +178,19 @@ body {
   background: var(--canvas);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-feature-settings: "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
 }
 
-/* Headings use the display serif everywhere (unlayered, so it wins over utility weights). */
-h1, h2, h3 {
-  font-family: var(--font-display);
-  font-weight: 450;
-  letter-spacing: -0.01em;
-  font-optical-sizing: auto;
-}
-/* Table headers read as small spaced-out capitals, like the reference's labels. */
-thead th {
-  font-size: 10.5px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-/* Small capitals label ("SURF INSTRUCTOR" in the reference). */
-.eyebrow {
-  font-size: 10.5px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.font-display { font-family: var(--font-display); font-optical-sizing: auto; }
+/* Headings: bold geometric sans (unlayered, so every heading shares one weight). */
+h1, h2, h3 { font-weight: 600; letter-spacing: -0.015em; }
+thead th { font-size: 12px; font-weight: 500; }
 
-/* Painted seascape behind everything */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-  background: var(--sky-2);
+@layer components {
+  /* Small secondary label */
+  .eyebrow { font-size: 12px; font-weight: 500; }
 }
-.backdrop svg { width: 100%; height: 100%; display: block; }
-.orb { display: none; }
+
+.backdrop { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: var(--canvas); }
 
 /* Soft fade behind the sticky top bar, so scrolled content never shows through its margins */
 .header-fade::before {
@@ -247,7 +211,7 @@ thead th {
 .glass-pop {
   background: var(--popover);
   border: 1px solid var(--border);
-  box-shadow: 0 24px 50px -18px rgba(20, 20, 18, 0.35);
+  box-shadow: 0 24px 50px -18px rgba(20, 20, 30, 0.3);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
@@ -256,30 +220,25 @@ thead th {
   border: 1px solid var(--hairline);
 }
 
-/* "Photo" cards: painted gradients standing in for the reference's photographs (same in both themes). */
-.photo-sunset {
-  color: #fffaf2;
+/* Dark "bank card" panels with big curved shapes (same in both themes). */
+.ink-card {
+  color: #ffffff;
   background:
-    linear-gradient(to bottom, transparent 58%, rgba(48, 26, 14, 0.5) 59%, rgba(26, 14, 8, 0.85) 100%),
-    radial-gradient(70% 55% at 70% 34%, #ffe2ad 0%, #f4b066 18%, #d27a37 42%, #9a4f24 70%, #5a3019 100%);
+    radial-gradient(115% 150% at 118% -30%, #9a9aa0 0 46%, transparent 46.4%),
+    radial-gradient(80% 120% at 108% 128%, #1c1c1e 0 52%, transparent 52.4%),
+    #545458;
 }
-.photo-sea {
-  color: #f6f3ec;
+.ink-card-alt {
+  color: #ffffff;
   background:
-    linear-gradient(to bottom, transparent 46%, rgba(255, 255, 255, 0.35) 46.5%, transparent 48%),
-    linear-gradient(180deg, #c4cfca 0%, #9cb0ab 30%, #7c958f 46%, #4f6a66 62%, #2c4441 100%);
+    radial-gradient(120% 160% at -10% 135%, #2a2a2d 0 50%, transparent 50.4%),
+    radial-gradient(90% 140% at 112% -20%, #2a2a2d 0 38%, transparent 38.4%),
+    #79797e;
 }
-.photo-sunset .photo-tag, .photo-sea .photo-tag {
-  background: rgba(20, 16, 12, 0.32);
-  color: #fffaf2;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-}
-.photo-shade { text-shadow: 0 1px 12px rgba(30, 18, 10, 0.35); }
 
 .tnum { font-variant-numeric: tabular-nums; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
-::selection { background: rgba(192, 97, 42, 0.22); }
+::selection { background: rgba(29, 29, 31, 0.14); }
 select option { background: var(--panel-solid); color: var(--ink); }
 
 /* Recharts */
@@ -290,8 +249,10 @@ select option { background: var(--panel-solid); color: var(--ink); }
 
 @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(12,163,12,.5); } 70% { box-shadow: 0 0 0 6px rgba(12,163,12,0); } 100% { box-shadow: 0 0 0 0 rgba(12,163,12,0); } }
 .live-dot { animation: pulse-ring 2s infinite; }
-@keyframes flash { from { background: rgba(192, 97, 42, 0.16); } to { background: transparent; } }
+@keyframes flash { from { background: var(--surface-3); } to { background: transparent; } }
 .flash { animation: flash 2.5s ease-out; }
+@keyframes reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.reveal { animation: reveal .25s ease-out; }
 
 @media print {
   .no-print, .backdrop { display: none !important; }
