@@ -139,7 +139,7 @@ function Sidebar({ groups, mobile, onClose }: { groups: NavGroup[]; mobile?: boo
         </div>
       </nav>
       <div className="mx-4 mt-4 flex items-center gap-3 rounded-2xl bg-surface-1 p-3">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#b4a9ff] to-[#6450e6] text-xs font-bold text-white">{initials(user?.name)}</span>
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-lavender text-xs font-bold text-lavender-ink">{initials(user?.name)}</span>
         <span className="min-w-0 flex-1 leading-tight">
           <span className="block truncate text-sm font-semibold">{user?.name}</span>
           <span className="block truncate text-[11px] text-ink-3">{user?.designation}</span>
@@ -227,13 +227,13 @@ function UserMenu() {
   return (
     <div className="relative" ref={ref}>
       <button onClick={() => setOpen((o) => !o)} aria-label="Account" aria-expanded={open}
-        className="ml-1 flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[#b4a9ff] to-[#6450e6] text-sm font-bold text-white ring-2 ring-[var(--border)]">
+        className="ml-1 flex size-10 items-center justify-center rounded-full bg-lavender text-sm font-bold text-lavender-ink ring-2 ring-[var(--border)]">
         {initials(user?.name)}
       </button>
       {open && (
         <div className="glass-pop absolute right-0 top-12 z-40 w-72 rounded-3xl p-4">
           <div className="flex items-center gap-3">
-            <span className="flex size-11 items-center justify-center rounded-full bg-gradient-to-br from-[#b4a9ff] to-[#6450e6] font-bold text-white">{initials(user?.name)}</span>
+            <span className="flex size-11 items-center justify-center rounded-full bg-lavender font-bold text-lavender-ink">{initials(user?.name)}</span>
             <div className="min-w-0">
               <div className="truncate font-semibold">{user?.name}</div>
               <div className="truncate text-xs text-ink-3">{user?.designation}</div>

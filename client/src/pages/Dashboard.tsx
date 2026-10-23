@@ -6,7 +6,7 @@ import {
   AlertOctagon, AlertTriangle, ArrowRight, ArrowRightLeft, ArrowUpRight, Bell, CheckCircle2, Clock, Download, Files, Flag, GitMerge,
   Hourglass, MessageSquare, Paperclip, Plus, TrendingUp,
 } from 'lucide-react';
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 import { api, openDocument, qs } from '../lib/api';
 import { useAuth, useLive, useLookups } from '../lib/context';
 import { bytes, fmtDate, fmtDateTime, monthLabel, num, pct, relTime } from '../lib/format';
@@ -242,15 +242,15 @@ function GreetingCard({ data }: { data: DashboardData }) {
 function OverlapCard({ data }: { data: DashboardData }) {
   const o = data.overlaps;
   return (
-    <Link to="/overlaps" className="glass group flex min-h-[200px] flex-col justify-between rounded-[30px] p-6 transition hover:-translate-y-0.5">
+    <Link to="/overlaps" className="group flex min-h-[200px] flex-col justify-between rounded-[30px] bg-hl-yellow p-6 text-hl-yellow-ink shadow-[var(--shadow)] transition hover:-translate-y-0.5">
       <div className="flex items-start justify-between">
         <OverlapGlyph />
         <span className="text-[52px] font-light leading-none tracking-tight tnum">{o.open}</span>
       </div>
       <div>
-        <div className="text-lg font-medium text-ink">Overlapping colleges</div>
-        <div className="mt-0.5 text-xs text-ink-3">{o.rbPgrc} with RB + PGRC · Coordination Required</div>
-        <div className="mt-3 flex items-center gap-1 text-xs font-medium text-accent-text">Review overlaps <ArrowRight className="size-3.5 transition group-hover:translate-x-0.5" /></div>
+        <div className="text-lg font-semibold">Overlapping colleges</div>
+        <div className="mt-0.5 text-xs opacity-70">{o.rbPgrc} with RB + PGRC · Coordination Required</div>
+        <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-black/85 px-3 py-1.5 text-xs font-medium text-[#f6e77d]">Review overlaps <ArrowRight className="size-3.5 transition group-hover:translate-x-0.5" /></div>
       </div>
     </Link>
   );
@@ -259,10 +259,9 @@ function OverlapCard({ data }: { data: DashboardData }) {
 function OverlapGlyph() {
   return (
     <svg viewBox="0 0 72 56" className="h-14 w-auto" aria-hidden>
-      <circle cx="26" cy="28" r="20" fill="#7461ee" opacity=".55" />
-      <circle cx="46" cy="28" r="20" fill="#b4a9ff" opacity=".55" />
-      <path d="M36 11.5a20 20 0 0 1 0 33 20 20 0 0 1 0-33z" fill="#f2efff" opacity=".9" />
-      <path d="M33 22l3-4 3 4m-3-4v14" stroke="#7461ee" strokeWidth="2" strokeLinecap="round" fill="none" />
+      <circle cx="26" cy="28" r="19" fill="none" stroke="#1b1b1c" strokeWidth="5" />
+      <circle cx="46" cy="28" r="19" fill="none" stroke="#1b1b1c" strokeWidth="5" opacity=".35" />
+      <path d="M36 12.2a19 19 0 0 1 0 31.6 19 19 0 0 1 0-31.6z" fill="#1b1b1c" />
     </svg>
   );
 }
@@ -320,7 +319,7 @@ function CaseFocus() {
       <section className="min-w-0 lg:col-span-2 xl:col-span-1">
         <h2 className="mb-3 text-lg font-normal text-ink-2">Status</h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
-          <div className="glass rounded-[26px] p-5 text-center">{detail ? <Countdown c={detail} /> : <Spinner />}</div>
+          <div className="rounded-[26px] bg-hl-grey p-5 text-center text-hl-grey-ink shadow-[var(--shadow)]">{detail ? <Countdown c={detail} /> : <Spinner />}</div>
           <DeadlineIllustration className="mx-auto hidden h-[170px] w-auto sm:block" />
         </div>
       </section>
@@ -371,7 +370,7 @@ function CaseDescription({ c }: { c: CaseDetail }) {
         </Row>
         {last && (
           <div className="mt-2 flex items-start gap-2 rounded-2xl bg-surface-2 p-2.5 pl-11">
-            <span className="-ml-8 flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#b4a9ff] to-[#6450e6] text-[10px] font-bold text-white">{initials(last.actor_name)}</span>
+            <span className="-ml-8 flex size-7 shrink-0 items-center justify-center rounded-full bg-lavender text-[10px] font-bold text-lavender-ink">{initials(last.actor_name)}</span>
             <span className="line-clamp-2 text-xs text-ink-2">{last.remarks}</span>
           </div>
         )}
@@ -402,21 +401,21 @@ function Countdown({ c }: { c: CaseDetail }) {
   const ticks = 40;
   const used = Math.min(1, Math.max(0, c.sla.age / total));
   const overdue = c.sla.daysLeft < 0;
-  const color = overdue ? 'var(--critical)' : c.sla.state === 'approaching' ? 'var(--warning)' : 'var(--accent)';
+  const color = overdue ? 'var(--critical)' : c.sla.state === 'approaching' ? '#c98500' : 'currentColor';
   return (
     <div>
-      <div className="text-sm font-medium text-ink-2">{c.status}</div>
+      <div className="text-sm font-medium opacity-75">{c.status}</div>
       <svg viewBox="0 0 140 140" className="mx-auto my-2 size-40" role="img" aria-label={`${Math.abs(c.sla.daysLeft)} days ${overdue ? 'overdue' : 'left'}`}>
         {Array.from({ length: ticks }, (_, i) => {
           const a = (i / ticks) * Math.PI * 2 - Math.PI / 2;
           const on = i / ticks < (overdue ? 1 : 1 - used);
           return <line key={i} x1={70 + Math.cos(a) * 54} y1={70 + Math.sin(a) * 54} x2={70 + Math.cos(a) * 62} y2={70 + Math.sin(a) * 62}
-            stroke={on ? color : 'var(--axis)'} strokeWidth="3" strokeLinecap="round" />;
+            stroke={on ? color : 'currentColor'} strokeOpacity={on ? 1 : 0.18} strokeWidth="3" strokeLinecap="round" />;
         })}
-        <text x="70" y="74" textAnchor="middle" fontSize="44" fontWeight="300" fill="var(--ink)">{Math.abs(c.sla.daysLeft)}</text>
-        <text x="70" y="96" textAnchor="middle" fontSize="11" fill="var(--ink-3)">{overdue ? 'Days overdue' : 'Days left'}</text>
+        <text x="70" y="74" textAnchor="middle" fontSize="44" fontWeight="300" fill="currentColor">{Math.abs(c.sla.daysLeft)}</text>
+        <text x="70" y="96" textAnchor="middle" fontSize="11" fill="currentColor" opacity=".65">{overdue ? 'Days overdue' : 'Days left'}</text>
       </svg>
-      <div className="text-xs text-ink-3">Due date: <span className="tnum">{ddmmyyyy(c.expected_disposal)}</span></div>
+      <div className="text-xs opacity-70">Due date: <span className="tnum">{ddmmyyyy(c.expected_disposal)}</span></div>
     </div>
   );
 }
@@ -452,7 +451,7 @@ function Goal({ label, value }: { label: string; value: number | null }) {
       <div className="text-[26px] font-light leading-none tracking-tight tnum">{value === null ? '—' : `${Math.round(v)}%`}</div>
       <div>
         <div className="h-2 overflow-hidden rounded-full bg-surface-3" role="progressbar" aria-valuenow={v} aria-valuemin={0} aria-valuemax={100} aria-label={label}>
-          <div className="h-full rounded-full bg-gradient-to-r from-[#b4a9ff] to-[var(--accent)]" style={{ width: `${v}%` }} />
+          <div className="h-full rounded-full bg-accent" style={{ width: `${v}%` }} />
         </div>
         <div className="mt-2 text-xs text-ink-2">{label}</div>
       </div>
@@ -464,6 +463,7 @@ function WorkloadCard({ bureaus, received30, disposed30, onPick }: { bureaus: Da
   const c = useTokens();
   const rows = bureaus.filter((b) => b.pending > 0);
   const total = rows.reduce((s, b) => s + b.pending, 0);
+  const peak = Math.max(0, ...rows.map((b) => b.pending));
   const net = received30 - disposed30;
   return (
     <div className="glass flex min-h-[128px] gap-3 rounded-[22px] p-4">
@@ -478,12 +478,16 @@ function WorkloadCard({ bureaus, received30, disposed30, onPick }: { bureaus: Da
         <ResponsiveContainer width="100%" height={104}>
           <BarChart data={rows} margin={{ top: 4, right: 0, left: 0, bottom: 0 }} barCategoryGap="18%">
             <defs>
-              <linearGradient id="wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#b4a9ff" /><stop offset="100%" stopColor={c('var(--accent)')} /></linearGradient>
+              <pattern id="wl-stripes" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <rect width="6" height="6" fill={c('var(--accent)')} /><rect width="2.2" height="6" fill="#ffffff" opacity=".45" />
+              </pattern>
             </defs>
             <XAxis dataKey="code" tickLine={false} axisLine={false} tick={{ fill: c('var(--muted)'), fontSize: 10 }} interval={0} />
             <Tooltip content={<ChartTooltip />} cursor={{ fill: c('var(--surface-2)'), radius: 6 }} />
-            <Bar dataKey="pending" name="Active cases" fill="url(#wl)" radius={[6, 6, 6, 6]} maxBarSize={20} isAnimationActive={false} style={{ cursor: 'pointer' }}
-              onClick={(d: unknown) => onPick(String((d as { payload: { code: string } }).payload.code))} />
+            <Bar dataKey="pending" name="Active cases" radius={[6, 6, 6, 6]} maxBarSize={20} isAnimationActive={false} style={{ cursor: 'pointer' }}
+              onClick={(d: unknown) => onPick(String((d as { payload: { code: string } }).payload.code))}>
+              {rows.map((r) => <Cell key={r.code} fill={r.pending === peak ? 'url(#wl-stripes)' : c('var(--surface-3)')} />)}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>

@@ -1,50 +1,55 @@
 @import "tailwindcss";
 
 /*
-  Visual language: soft "clay" cards on an indigo-violet app shell, lavender accent.
-  Dark is the default; light is a lavender variant close to the original reference.
+  Visual language: soft cards on a charcoal app shell with a pale-yellow accent, one yellow and
+  one light-grey highlight card, lavender as a small secondary accent. Dark is the default.
   Panels use .glass (a solid card; the name is historical); nested tiles use .tile.
   Colors are tokens so both themes share one codebase.
 */
 
-/* ---------- Dark (default) ---------- */
-/* ---------- Dark (default): deep indigo-violet ---------- */
+/* ---------- Dark (default): charcoal with a pale-yellow accent ---------- */
 :root,
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --canvas: #0d0c16;
-  --sidebar: #15132b;
-  --main: #1b1935;
-  --page: #1b1935;
-  --panel: #24213f;
-  --panel-solid: #24213f;
-  --popover: rgba(43, 39, 73, 0.98);
+  --canvas: #5b616a;
+  --sidebar: #1e1e20;
+  --main: #262628;
+  --page: #262628;
+  --panel: #313134;
+  --panel-solid: #313134;
+  --popover: rgba(50, 50, 53, 0.98);
   --surface-1: rgba(255, 255, 255, 0.045);
-  --surface-2: rgba(255, 255, 255, 0.075);
+  --surface-2: rgba(255, 255, 255, 0.07);
   --surface-3: rgba(255, 255, 255, 0.12);
-  --ink: #eeecff;
-  --ink-2: #c4c0e8;
-  --ink-3: #9a95c4;
-  --muted: #7f7aaa;
-  --hairline: rgba(200, 190, 255, 0.09);
-  --axis: rgba(200, 190, 255, 0.16);
-  --border: rgba(200, 190, 255, 0.10);
-  --highlight: rgba(255, 255, 255, 0.035);
-  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.65), 0 2px 6px -2px rgba(0, 0, 0, 0.35);
-  --accent: #7461ee;
-  --accent-strong: #6450e6;
-  --accent-ink: #ffffff;
-  --accent-soft: rgba(141, 124, 246, 0.18);
-  --accent-text: #b4a9ff;
-  --select: rgba(111, 134, 255, 0.14);
-  --select-border: #6f86ff;
-  --nav: #15132b;
-  --nav-ink: #c4c0e8;
-  --nav-active: #7461ee;
+  --ink: #f4f4f2;
+  --ink-2: #c9c9c6;
+  --ink-3: #9d9d9a;
+  --muted: #7d7d7a;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --axis: rgba(255, 255, 255, 0.15);
+  --border: rgba(255, 255, 255, 0.07);
+  --highlight: rgba(255, 255, 255, 0.03);
+  --shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7), 0 2px 6px -3px rgba(0, 0, 0, 0.4);
+  --accent: #f6e77d;
+  --accent-strong: #ecd957;
+  --accent-ink: #1b1b1c;
+  --accent-soft: rgba(246, 231, 125, 0.14);
+  --accent-text: #f6e77d;
+  --lavender: #c9c3f2;
+  --lavender-ink: #26233f;
+  --hl-yellow: #f6e77d;
+  --hl-yellow-ink: #1b1b1c;
+  --hl-grey: #d8d8d6;
+  --hl-grey-ink: #1b1b1c;
+  --select: rgba(246, 231, 125, 0.08);
+  --select-border: #f6e77d;
+  --nav: #1e1e20;
+  --nav-ink: #c9c9c6;
+  --nav-active: #f6e77d;
 
-  /* two-series pair (validated: received vs disposed) */
-  --b1: #8d7cf6;
-  --b2: #22a98e;
+  /* two-series pair (validated on #313134: received vs disposed) */
+  --b1: #a99520;
+  --b2: #7d73d6;
 
   /* categorical: one fixed hue per Bureau/Cell (validated dark steps) */
   --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
@@ -57,47 +62,50 @@
 
   --q1: #184f95; --q2: #256abf; --q3: #3987e5; --q4: #6da7ec; --q5: #b7d3f6;
 
-  --backdrop:
-    radial-gradient(50% 45% at 90% 0%, rgba(116, 97, 238, 0.18) 0%, rgba(116, 97, 238, 0) 70%),
-    radial-gradient(40% 40% at 0% 100%, rgba(90, 120, 255, 0.12) 0%, rgba(90, 120, 255, 0) 70%),
-    #0d0c16;
+  --backdrop: #5b616a;
 }
 
-/* ---------- Light: soft lavender, close to the reference ---------- */
+/* ---------- Light: soft greys with the same yellow ---------- */
 :root[data-theme="light"] {
   color-scheme: light;
-  --canvas: #dcdce6;
+  --canvas: #cfd2d6;
   --sidebar: #ffffff;
-  --main: #ebebf3;
-  --page: #ebebf3;
+  --main: #f1f1ef;
+  --page: #f1f1ef;
   --panel: #ffffff;
   --panel-solid: #ffffff;
   --popover: rgba(255, 255, 255, 0.98);
-  --surface-1: rgba(108, 92, 231, 0.04);
-  --surface-2: rgba(108, 92, 231, 0.07);
-  --surface-3: rgba(108, 92, 231, 0.12);
-  --ink: #2c2960;
-  --ink-2: #4f4b80;
-  --ink-3: #6f6b99;
-  --muted: #8b88ad;
-  --hairline: rgba(60, 50, 140, 0.09);
-  --axis: rgba(60, 50, 140, 0.18);
-  --border: rgba(60, 50, 140, 0.08);
+  --surface-1: rgba(20, 20, 22, 0.035);
+  --surface-2: rgba(20, 20, 22, 0.06);
+  --surface-3: rgba(20, 20, 22, 0.1);
+  --ink: #1b1b1c;
+  --ink-2: #48484a;
+  --ink-3: #6e6e70;
+  --muted: #8a8a8c;
+  --hairline: rgba(20, 20, 22, 0.08);
+  --axis: rgba(20, 20, 22, 0.18);
+  --border: rgba(20, 20, 22, 0.07);
   --highlight: rgba(255, 255, 255, 0.9);
-  --shadow: 0 16px 34px -20px rgba(70, 60, 150, 0.28), 0 2px 6px -3px rgba(70, 60, 150, 0.12);
-  --accent: #6c5ce7;
-  --accent-strong: #5a48d6;
-  --accent-ink: #ffffff;
-  --accent-soft: rgba(108, 92, 231, 0.12);
-  --accent-text: #5543cf;
-  --select: #e3ebfd;
-  --select-border: #5b7cf0;
+  --shadow: 0 16px 34px -22px rgba(20, 20, 22, 0.28), 0 2px 6px -3px rgba(20, 20, 22, 0.1);
+  --accent: #f3e15c;
+  --accent-strong: #e6d13e;
+  --accent-ink: #1b1b1c;
+  --accent-soft: rgba(225, 200, 40, 0.2);
+  --accent-text: #6e5f00;
+  --lavender: #c9c3f2;
+  --lavender-ink: #26233f;
+  --hl-yellow: #f6e77d;
+  --hl-yellow-ink: #1b1b1c;
+  --hl-grey: #2a2a2c;
+  --hl-grey-ink: #f4f4f2;
+  --select: #fbf6cf;
+  --select-border: #d9c43a;
   --nav: #ffffff;
-  --nav-ink: #4f4b80;
-  --nav-active: #6c5ce7;
+  --nav-ink: #48484a;
+  --nav-active: #f3e15c;
 
-  --b1: #6c5ce7;
-  --b2: #0f9483;
+  --b1: #a08c00;
+  --b2: #6c5ce7;
 
   --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
   --s5: #e87ba4; --s6: #008300; --s7: #6250d6; --s8: #e34948;
@@ -108,7 +116,7 @@
 
   --q1: #86b6ef; --q2: #5598e7; --q3: #2a78d6; --q4: #1c5cab; --q5: #0d366b;
 
-  --backdrop: #dcdce6;
+  --backdrop: #cfd2d6;
 }
 
 @theme inline {
@@ -118,6 +126,12 @@
   --color-main: var(--main);
   --color-select: var(--select);
   --color-select-border: var(--select-border);
+  --color-lavender: var(--lavender);
+  --color-lavender-ink: var(--lavender-ink);
+  --color-hl-yellow: var(--hl-yellow);
+  --color-hl-yellow-ink: var(--hl-yellow-ink);
+  --color-hl-grey: var(--hl-grey);
+  --color-hl-grey-ink: var(--hl-grey-ink);
   --color-panel: var(--panel);
   --color-panel-solid: var(--panel-solid);
   --color-popover: var(--popover);

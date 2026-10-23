@@ -36,7 +36,7 @@ export default function Login() {
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-3">All India Council for Technical Education</div>
         </div>
         <h1 className="mt-8 max-w-xl text-[44px] font-bold leading-[1.08] tracking-tight">
-          Every institution complaint, <span className="bg-gradient-to-r from-[#c9c0ff] to-[var(--accent)] bg-clip-text text-transparent">one window.</span>
+          Every institution complaint, <span className="text-accent-text">one window.</span>
         </h1>
         <p className="mt-4 max-w-lg text-ink-2">Integrated monitoring for the Regulation Bureau, PGRC, other Bureaus/Cells and Regional Offices.</p>
         <ul className="mt-10 grid max-w-xl grid-cols-2 gap-3">
