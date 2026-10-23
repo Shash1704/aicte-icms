@@ -25,7 +25,7 @@ interface TipPayload { name?: string; value?: number | string; color?: string; d
 export function ChartTooltip({ active, payload, label, labelFormatter, valueSuffix = '' }: { active?: boolean; payload?: TipPayload[]; label?: ReactNode; labelFormatter?: (l: ReactNode) => ReactNode; valueSuffix?: string }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="glass-pop min-w-36 rounded-2xl px-3.5 py-2.5 text-xs">
+    <div className="glass-pop min-w-36 rounded-lg px-3.5 py-2.5 text-xs">
       <div className="mb-1 font-semibold text-ink">{labelFormatter ? labelFormatter(label) : label}</div>
       {payload.map((p) => (
         <div key={String(p.dataKey)} className="flex items-center gap-2 text-ink-2">

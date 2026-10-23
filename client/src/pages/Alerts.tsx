@@ -35,7 +35,7 @@ export default function Alerts() {
       <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8">
         {Object.entries(ALERT_TYPES).map(([k, t]) => (
           <button key={k} onClick={() => set({ type: values.type === k ? undefined : k })}
-            className={clsx('glass rounded-[22px] p-4 text-left transition hover:-translate-y-0.5', values.type === k ? 'border-accent ring-1 ring-accent' : 'border-line')}>
+            className={clsx('glass rounded-[10px] p-4 text-left transition hover:-translate-y-0.5', values.type === k ? 'border-accent ring-1 ring-accent' : 'border-line')}>
             <div className="flex items-center gap-1.5 text-xs text-ink-2">{t.icon}{t.label}</div>
             <div className="mt-1 text-xl font-semibold tnum">{byType[k]?.n ?? 0}</div>
             <div className="text-[11px] text-ink-3">{byType[k]?.unread ?? 0} unread</div>

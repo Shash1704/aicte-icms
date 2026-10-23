@@ -3,14 +3,13 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-do
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import {
-  BarChart3, Bell, Building2, FilePlus2, FolderKanban, GitMerge, LayoutGrid, LogOut, Menu, Monitor, Moon, Search, ShieldCheck, Sun, X,
+  ArrowRight, BarChart3, Bell, Building2, FilePlus2, FolderKanban, GitMerge, LayoutGrid, LogOut, Menu, Monitor, Moon, Search, ShieldCheck, Sun, X,
 } from 'lucide-react';
 import { api, DEMO, qs } from '../lib/api';
 import { useAuth, useLive, useLookups, useTheme, useToast } from '../lib/context';
 import { relTime } from '../lib/format';
 import type { Alert, OverlapGroup } from '../lib/types';
 import { BureauChip, StatusBadge, severityIcon } from './ui';
-import { SendIllustration } from './Illustrations';
 
 export function LogoMark({ className }: { className?: string }) {
   return (
@@ -44,15 +43,15 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-main lg:bg-transparent lg:p-5 xl:p-7">
-      <div id="app-shell" className="lg:flex lg:h-[calc(100vh-40px)] lg:overflow-hidden lg:rounded-[28px] lg:bg-sidebar lg:shadow-[var(--shell-shadow)] xl:h-[calc(100vh-56px)]">
-        <aside className="no-print hidden w-[236px] shrink-0 border-r border-hairline lg:block"><Sidebar items={items} /></aside>
+      <div id="app-shell" className="lg:flex lg:h-[calc(100vh-40px)] lg:overflow-hidden lg:rounded-[10px] lg:bg-sidebar lg:shadow-[var(--shell-shadow)] xl:h-[calc(100vh-56px)]">
+        <aside className="no-print hidden w-[228px] shrink-0 border-r border-hairline lg:block"><Sidebar items={items} /></aside>
         {drawer && (
           <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal>
             <div className="absolute inset-0 bg-black/50" onClick={() => setDrawer(false)} />
             <div className="absolute inset-y-0 left-0 w-[272px] bg-sidebar shadow-2xl"><Sidebar items={items} mobile onClose={() => setDrawer(false)} /></div>
           </div>
         )}
-        <div id="main-scroll" className="relative flex min-h-screen min-w-0 flex-1 flex-col bg-main lg:min-h-0 lg:overflow-y-auto lg:rounded-r-[28px]">
+        <div id="main-scroll" className="relative flex min-h-screen min-w-0 flex-1 flex-col bg-main lg:min-h-0 lg:overflow-y-auto lg:rounded-r-[10px]">
           <header className="header-fade no-print sticky top-0 isolate z-30 px-4 pb-2 pt-4 sm:px-7 sm:pt-5">
             <div className="flex items-center gap-2 sm:gap-3">
               <button className={clsx(iconBtn, 'lg:hidden')} onClick={() => setDrawer(true)} aria-label="Open menu"><Menu className="size-5" /></button>
@@ -79,38 +78,33 @@ export default function Layout() {
 }
 
 type NavLeaf = { to: string; label: string; icon?: typeof LayoutGrid; end?: boolean; badge?: number };
-/** Icon sidebar like the reference: a charcoal pill marks the current page; a dark card offers the main action. */
+/** Minimal text sidebar: stacked wordmark, spaced-capital links, a short line marks the current page. */
 function Sidebar({ items, mobile, onClose }: { items: NavLeaf[]; mobile?: boolean; onClose?: () => void }) {
   return (
-    <div className="flex h-full flex-col px-5 pb-5 pt-7">
-      <div className="flex items-center justify-between pl-2">
-        <Link to="/" className="flex items-center gap-2.5" aria-label="AICTE ICMS home">
-          <LogoMark className="size-9" />
-          <span className="leading-tight">
-            <span className="block text-[17px] font-bold tracking-tight">ICMS</span>
-            <span className="block text-[11px] text-ink-3">AICTE complaints</span>
-          </span>
-        </Link>
+    <div className="flex h-full flex-col px-7 pb-6 pt-8">
+      <div className="flex items-start justify-between">
+        <Link to="/" className="block text-[15px] font-bold leading-[1.05] tracking-[0.18em] text-ink" aria-label="AICTE ICMS home">IC<br />MS</Link>
         {mobile && <button className={iconBtn} onClick={onClose} aria-label="Close menu"><X className="size-5" /></button>}
       </div>
-      <nav aria-label="Main" className="mt-8 flex-1 space-y-1 overflow-y-auto pb-4">
+      <div className="eyebrow mt-3 text-[9.5px] text-ink-3">AICTE complaints</div>
+      <nav aria-label="Main" className="mt-10 flex-1 space-y-1 overflow-y-auto pb-4">
         {items.map((n) => (
           <NavLink key={n.to} to={n.to} end={n.end}
-            className={({ isActive }) => clsx('flex items-center gap-3 rounded-[14px] px-4 py-2.5 text-[13.5px] transition-colors',
-              isActive ? 'bg-accent font-medium text-accent-ink shadow-[0_12px_24px_-14px_rgba(0,0,0,0.6)]' : 'text-ink-3 hover:bg-surface-2 hover:text-ink')}>
+            className={({ isActive }) => clsx('group flex items-center gap-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em] transition-colors',
+              isActive ? 'text-ink' : 'text-ink-3 hover:text-ink')}>
             {({ isActive }) => (<>
-              {n.icon && <n.icon className="size-[18px] shrink-0" strokeWidth={isActive ? 2 : 1.7} />}
+              <span className={clsx('h-px shrink-0 bg-current transition-all', isActive ? 'w-5' : 'w-2 opacity-40 group-hover:w-4')} />
               <span className="flex-1">{n.label}</span>
-              {!!n.badge && <span className={clsx('min-w-7 rounded-full px-1.5 py-px text-center text-[10.5px] font-medium tnum',
-                isActive ? 'bg-white/15 text-accent-ink' : 'bg-surface-2 text-ink-3')}>{n.badge > 999 ? '999+' : n.badge}</span>}
+              {!!n.badge && <span className="text-[10px] tracking-normal text-ink-3 tnum">{n.badge > 999 ? '999+' : n.badge}</span>}
             </>)}
           </NavLink>
         ))}
       </nav>
-      <div className="relative mt-2 overflow-hidden rounded-[22px] bg-[#232326] px-4 pb-4 pt-5 text-center text-white">
-        <div className="text-[13px] font-medium leading-snug">Got a new complaint?<br /><span className="text-white/60">Register it in a minute.</span></div>
-        <SendIllustration className="mx-auto mt-2 h-[84px] w-auto" />
-        <Link to="/cases/new" className="mt-2 block rounded-[14px] bg-[#5b5b60] py-2.5 text-[13px] font-medium text-white transition hover:bg-[#6b6b70]">Register complaint</Link>
+      <div className="space-y-4">
+        <Link to="/cases/new" className="btn-raised flex items-center justify-between rounded-[4px] px-4 py-3 text-[10.5px] font-medium uppercase tracking-[0.18em]">
+          New complaint <ArrowRight className="size-3.5" />
+        </Link>
+        <div className="eyebrow text-[9.5px] text-muted">.SIH26264 · Team Varangians</div>
       </div>
     </div>
   );
@@ -119,16 +113,16 @@ function Sidebar({ items, mobile, onClose }: { items: NavLeaf[]; mobile?: boolea
 function LiveIndicator() {
   const { connected, lastAt, simulator } = useLive();
   return (
-    <div className="hidden shrink-0 items-center gap-2 rounded-[14px] bg-surface-2 px-3.5 py-2.5 text-xs font-medium text-ink-2 md:flex" title={connected ? 'Receiving real-time updates' : 'Reconnecting…'}>
+    <div className="eyebrow hidden shrink-0 items-center gap-2 text-ink-2 md:flex" title={connected ? 'Receiving real-time updates' : 'Reconnecting…'}>
       <span className={clsx('size-1.5 rounded-full', connected ? 'live-dot bg-good' : 'bg-muted')} />
       {connected ? 'Live' : 'Offline'}
-      {lastAt && <span className="font-normal text-ink-3">· {relTime(lastAt)}</span>}
-      {simulator && <span className="rounded-full bg-accent-soft px-1.5 text-accent-text">demo feed</span>}
+      {lastAt && <span className="normal-case tracking-normal text-ink-3">· {relTime(lastAt)}</span>}
+      {simulator && <span className="text-ink-3">· demo feed</span>}
     </div>
   );
 }
 
-const iconBtn = 'relative flex size-10 items-center justify-center rounded-[14px] bg-surface-2 text-ink transition-colors hover:bg-surface-3';
+const iconBtn = 'relative flex size-10 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-2 hover:text-ink';
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -160,12 +154,12 @@ function AlertBell({ summary }: { summary?: { unread: number; critical: number; 
         {!!summary?.unread && <span className={clsx('absolute right-1 top-1 min-w-[17px] rounded-full px-1 text-center text-[10px] font-bold leading-[17px] text-white', summary.critical ? 'bg-critical' : 'bg-sun')}>{summary.unread > 99 ? '99+' : summary.unread}</span>}
       </button>
       {open && (
-        <div className="glass-pop absolute right-0 top-12 z-40 w-[min(92vw,380px)] overflow-hidden rounded-3xl">
+        <div className="glass-pop absolute right-0 top-12 z-40 w-[min(92vw,380px)] overflow-hidden rounded-[10px]">
           <div className="flex items-center justify-between px-4 py-3 text-sm font-semibold">Alerts <span className="text-xs font-normal text-ink-3">{summary?.unread ?? 0} unread</span></div>
           <ul className="max-h-96 space-y-1 overflow-y-auto px-2 pb-2">
             {summary?.latest.map((a) => (
               <li key={a.id}>
-                <button className={clsx('flex w-full gap-2.5 rounded-2xl px-3 py-2.5 text-left hover:bg-surface-2', !a.read && 'bg-surface-1')}
+                <button className={clsx('flex w-full gap-2.5 rounded-lg px-3 py-2.5 text-left hover:bg-surface-2', !a.read && 'bg-surface-1')}
                   onClick={() => { setOpen(false); api(`/alerts/${a.id}/read`, { method: 'POST' }).catch(() => {}); nav(a.type === 'OVERLAP' ? `/institutions/${a.institution_id}` : a.case_id ? `/cases/${a.case_id}` : '/alerts'); }}>
                   <span className={clsx('mt-0.5', a.severity === 'critical' ? 'text-critical-text' : a.severity === 'serious' ? 'text-serious-text' : a.severity === 'warning' ? 'text-warning-text' : 'text-info-text')}>{severityIcon(a.severity)}</span>
                   <span className="min-w-0">
@@ -192,11 +186,11 @@ function UserMenu() {
   return (
     <div className="relative" ref={ref}>
       <button onClick={() => setOpen((o) => !o)} aria-label="Account" aria-expanded={open}
-        className="ml-1 flex size-10 items-center justify-center rounded-[14px] bg-lavender text-sm font-semibold text-lavender-ink">
+        className="ml-1 flex size-9 items-center justify-center rounded-full bg-lavender text-xs font-semibold tracking-wider text-lavender-ink shadow-[0_8px_20px_-8px_rgba(0,0,0,0.8)]">
         {initials(user?.name)}
       </button>
       {open && (
-        <div className="glass-pop absolute right-0 top-12 z-40 w-72 rounded-3xl p-4">
+        <div className="glass-pop absolute right-0 top-12 z-40 w-72 rounded-[10px] p-4">
           <div className="flex items-center gap-3">
             <span className="flex size-11 items-center justify-center rounded-full bg-lavender font-semibold text-lavender-ink">{initials(user?.name)}</span>
             <div className="min-w-0">
@@ -204,7 +198,7 @@ function UserMenu() {
               <div className="truncate text-xs text-ink-3">{user?.designation}</div>
             </div>
           </div>
-          <div className="tile mt-3 rounded-2xl px-3 py-2 text-xs text-ink-2">Scope: {scope}</div>
+          <div className="tile mt-3 rounded-lg px-3 py-2 text-xs text-ink-2">Scope: {scope}</div>
           <button onClick={logout} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-surface-2 px-3 py-2 text-sm font-medium hover:bg-surface-3"><LogOut className="size-4" />Sign out</button>
         </div>
       )}
@@ -231,16 +225,16 @@ function GlobalSearch() {
   const go = (path: string) => { setOpen(false); setQ(''); nav(path); };
   return (
     <div className="relative min-w-0 flex-1 sm:max-w-xl md:mx-auto" ref={ref}>
-      <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-ink-2" strokeWidth={2} />
+      <Search className="pointer-events-none absolute left-0.5 top-1/2 size-3.5 -translate-y-1/2 text-ink-3" strokeWidth={2} />
       <input value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)}
         onKeyDown={(e) => { if (e.key === 'Enter' && q.trim()) go(`/cases${qs({ q: q.trim() })}`); if (e.key === 'Escape') setOpen(false); }}
         placeholder="Search Case ID, institution, AICTE ID…" aria-label="Search"
-        id="global-search" className="h-11 w-full rounded-[14px] border border-transparent bg-surface-2 pl-11 pr-4 text-sm text-ink placeholder:text-ink-3 focus:border-[var(--axis)] focus:bg-panel focus:outline-none" />
+        id="global-search" className="h-10 w-full rounded-none border-0 border-b border-[var(--axis)] bg-transparent pl-7 pr-2 text-[13px] text-ink placeholder:text-ink-3 focus:border-ink focus:outline-none" />
       {open && debounced.length >= 2 && data && (
-        <div className="glass-pop absolute left-0 right-0 top-12 z-40 overflow-hidden rounded-3xl p-2">
+        <div className="glass-pop absolute left-0 right-0 top-12 z-40 overflow-hidden rounded-[10px] p-2">
           {!!data.institutions.length && <div className="px-3 pb-1 pt-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted">Institutions</div>}
           {data.institutions.map((i) => (
-            <button key={i.id} className="flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left hover:bg-surface-2" onClick={() => go(`/institutions/${i.id}`)}>
+            <button key={i.id} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-surface-2" onClick={() => go(`/institutions/${i.id}`)}>
               <Building2 className="size-4 shrink-0 text-ink-3" />
               <span className="min-w-0 flex-1"><span className="block truncate text-sm">{i.name}</span><span className="text-xs text-ink-3">{i.aicte_id} · {i.city}, {i.state}</span></span>
               {i.fuzzy && <span className="shrink-0 text-xs text-ink-3" title="Fuzzy match">≈ {Math.round(i.score * 100)}%</span>}
@@ -248,13 +242,13 @@ function GlobalSearch() {
           ))}
           {!!data.cases.length && <div className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-muted">Cases</div>}
           {data.cases.map((c) => (
-            <button key={c.id} className="flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left hover:bg-surface-2" onClick={() => go(`/cases/${c.id}`)}>
+            <button key={c.id} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-surface-2" onClick={() => go(`/cases/${c.id}`)}>
               <FolderKanban className="size-4 shrink-0 text-ink-3" />
               <span className="min-w-0 flex-1"><span className="block truncate text-sm">{c.case_no} — {c.subject}</span><span className="truncate text-xs text-ink-3">{c.institution_name ?? 'Unidentified institution'}</span></span>
               <BureauChip code={c.bureau_code} /><StatusBadge status={c.status} />
             </button>
           ))}
-          <button className="mt-1 w-full rounded-2xl px-3 py-2 text-left text-sm font-medium text-accent-text hover:bg-surface-2" onClick={() => go(`/cases${qs({ q: debounced })}`)}>Search all cases for “{debounced}” ↵</button>
+          <button className="mt-1 w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-accent-text hover:bg-surface-2" onClick={() => go(`/cases${qs({ q: debounced })}`)}>Search all cases for “{debounced}” ↵</button>
         </div>
       )}
     </div>
@@ -267,7 +261,7 @@ function Toasts() {
   return (
     <div className="no-print pointer-events-none fixed bottom-5 right-4 z-50 flex w-[min(92vw,380px)] flex-col gap-2" aria-live="polite">
       {toasts.map((t) => (
-        <div key={t.id} className={clsx('glass-pop pointer-events-auto rounded-3xl p-3.5', t.tone === 'warning' && 'ring-1 ring-warning/60', t.tone === 'critical' && 'ring-1 ring-critical/60', t.tone === 'good' && 'ring-1 ring-good/50')}>
+        <div key={t.id} className={clsx('glass-pop pointer-events-auto rounded-[10px] p-3.5', t.tone === 'warning' && 'ring-1 ring-warning/60', t.tone === 'critical' && 'ring-1 ring-critical/60', t.tone === 'good' && 'ring-1 ring-good/50')}>
           <div className="flex items-start gap-2">
             <button className="min-w-0 flex-1 text-left" onClick={() => { if (t.href) nav(t.href); dismiss(t.id); }}>
               <div className="text-sm font-semibold">{t.title}</div>

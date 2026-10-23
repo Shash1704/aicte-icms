@@ -91,7 +91,7 @@ export default function NewCase() {
                     : <><AlertTriangle className="size-4 text-serious-text" />No confident match — pick one or register as unidentified</>}
                   {isFetching && <span className="text-xs font-normal text-ink-3">checking…</span>}
                 </div>
-                <ul className="divide-y divide-hairline tile rounded-2xl">
+                <ul className="divide-y divide-hairline tile rounded-lg">
                   {a.institution.candidates.map((c) => (
                     <li key={c.institution.id}>
                       <label className={clsx('flex cursor-pointer items-start gap-3 px-3 py-2.5', picked === c.institution.id && 'bg-accent-soft/50')}>
@@ -122,7 +122,7 @@ export default function NewCase() {
               <Field label="Description" required><Textarea rows={6} value={f.description} onChange={up('description')} required placeholder="Complaint text as received" /></Field>
             </div>
             {suggestion && (f.subject || f.description) && (
-              <div className="mt-3 rounded-2xl border border-accent/30 bg-accent-soft p-3.5 text-sm">
+              <div className="mt-3 rounded-lg border border-accent/30 bg-accent-soft p-3.5 text-sm">
                 <div className="flex items-center gap-2 font-medium text-accent-text"><Sparkles className="size-4" />Suggested classification</div>
                 <div className="mt-1 text-ink-2">
                   <b>{suggestion.categoryName}</b> ({Math.round(suggestion.confidence * 100)}% confidence{suggestion.keywords.length ? `; keywords: ${suggestion.keywords.join(', ')}` : ''}) · Priority <b>{suggestion.priority}</b> ({suggestion.priorityReason}) · Handle in <b>{bureauName(suggestion.suggestedBureau)}</b>
@@ -171,7 +171,7 @@ export default function NewCase() {
                   <div className="flex items-start gap-2 text-sm"><Building2 className="mt-0.5 size-4 text-ink-3" /><div><div className="font-medium">{pickedInst.name}</div><div className="text-xs text-ink-3">{pickedInst.aicte_id} · {a.existing.length} earlier complaint(s)</div></div></div>
                 ) : <p className="text-sm text-warning-text">Institution not selected — overlap check limited to complainant matching.</p>}
                 {pickedInst && otherBureauActive.length > 0 && (
-                  <div className="rounded-2xl border border-critical/35 bg-critical-soft p-3.5 text-sm">
+                  <div className="rounded-lg border border-critical/35 bg-critical-soft p-3.5 text-sm">
                     <div className="flex items-center gap-2 font-semibold text-critical-text"><GitMerge className="size-4" />Potential Overlapping Cases – Coordination Required</div>
                     <p className="mt-1 text-ink-2">Active cases on this institution with {[...new Set(otherBureauActive.map((e) => e.bureau_code))].map(bureauName).join(', ')}. Registering with {bureau} creates parallel action — coordinate, or register and link.</p>
                   </div>
@@ -181,7 +181,7 @@ export default function NewCase() {
                     <div className="mb-1.5 text-xs font-medium text-ink-3">Possible duplicates</div>
                     <ul className="space-y-1.5">
                       {a.similar.map((s) => (
-                        <li key={s.id}><Link to={`/cases/${s.id}`} target="_blank" className="block tile rounded-2xl p-2.5 hover:border-accent">
+                        <li key={s.id}><Link to={`/cases/${s.id}`} target="_blank" className="block tile rounded-lg p-2.5 hover:border-accent">
                           <div className="flex items-center gap-2 text-sm"><span className="font-medium">{s.case_no}</span><BureauChip code={s.bureau_code} />{s.similarity !== null ? <ScoreBar value={s.similarity} className="ml-auto" /> : <span className="ml-auto text-xs text-warning-text">same complainant</span>}</div>
                           <div className="truncate text-xs text-ink-2">{s.subject}</div>
                           {!!s.terms.length && <div className="text-[11px] text-ink-3">common: {s.terms.join(', ')}</div>}

@@ -75,6 +75,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
           {/* First view: only what needs the official today */}
           <div className="min-w-0 space-y-6">
+            <SectionNo n="01" label="Today" />
             <Greeting data={data} />
             <OverlapBanner data={data} />
             <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
@@ -91,6 +92,7 @@ export default function Dashboard() {
           </div>
 
           <aside className="min-w-0 space-y-5 xl:border-l xl:border-hairline xl:pl-6" aria-label="Summary">
+            <SectionNo n="02" label="Summary" />
             <TrendCard data={data} />
             <DisposalCard data={data} caseLink={caseLink} />
           </aside>
@@ -98,7 +100,7 @@ export default function Dashboard() {
           {/* Everything else stays one click away */}
           <div className="xl:col-span-2">
             <button onClick={toggleDetails} aria-expanded={details}
-              className="mx-auto flex items-center gap-2 rounded-[14px] bg-surface-2 px-5 py-3 text-sm font-medium text-ink transition hover:bg-surface-3">
+              className="btn-raised mx-auto flex items-center gap-2 rounded-[4px] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.16em] transition hover:brightness-125">
               {details ? 'Hide detailed statistics' : 'Show detailed statistics'}
               <ChevronDown className={clsx('size-4 transition-transform', details && 'rotate-180')} />
             </button>
@@ -106,14 +108,15 @@ export default function Dashboard() {
               <div className="reveal mt-8 space-y-6">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-xl">Detailed statistics</h2>
+                    <SectionNo n="03" label="In depth" />
+                    <h2 className="mt-2 text-lg">Detailed statistics</h2>
                     <p className="text-xs text-ink-3">Filter by Bureau/Cell, region or period</p>
                   </div>
                   <ScopeFilters />
                 </div>
 
                 <section>
-                  <div className="glass grid grid-cols-2 gap-1.5 rounded-[24px] p-2 lg:grid-cols-4">
+                  <div className="glass grid grid-cols-2 gap-1.5 rounded-[10px] p-2 lg:grid-cols-4">
                     <StripKpi to={caseLink({})} icon={<Files className="size-5" />} label="Total received" value={data.kpis.received} sub={`+${num(data.kpis.received_30d)} in 30 days`} />
                     <StripKpi to={caseLink({ active: '1' })} icon={<Hourglass className="size-5" />} label="Pending" value={data.kpis.pending} sub={`${num(data.kpis.not_started)} yet to be acted upon`} accent />
                     <StripKpi to={caseLink({ status: 'Disposed' })} icon={<CheckCircle2 className="size-5" />} label="Disposed" value={data.kpis.disposed} sub={`${pct(data.kpis.disposal_rate)} disposal rate`} />
@@ -128,10 +131,10 @@ export default function Dashboard() {
                 </section>
 
                 <div className="grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-                  <section className="glass rounded-[24px] p-5">
+                  <section className="glass rounded-[10px] p-5">
                     <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
                       <div>
-                        <h2 className="text-base">Received vs disposed</h2>
+                        <h2 className="text-[13px]">Received vs disposed</h2>
                         <p className="text-xs text-ink-3">Last 12 months</p>
                       </div>
                       <Link to="/reports?type=performance" className={pillLink}>Performance report <ArrowUpRight className="size-3.5" /></Link>
@@ -142,7 +145,7 @@ export default function Dashboard() {
                   <div className="space-y-5">
                     <section>
                       <div className="mb-3 flex items-center justify-between px-1">
-                        <h2 className="text-base">Performance goals</h2>
+                        <h2 className="text-[13px]">Performance goals</h2>
                         <Link to="/reports?type=disposal" className="flex items-center gap-1 text-xs font-medium text-ink-3 hover:text-ink">All reports <Plus className="size-3.5" /></Link>
                       </div>
                       <div className="grid grid-cols-3 gap-3">
@@ -153,7 +156,7 @@ export default function Dashboard() {
                     </section>
                     <section>
                       <div className="mb-3 flex items-center justify-between px-1">
-                        <h2 className="text-base">Bureau/Cell workload</h2>
+                        <h2 className="text-[13px]">Bureau/Cell workload</h2>
                         <Link to={caseLink({ active: '1' })} className="text-xs font-medium text-ink-3 hover:text-ink">Open cases</Link>
                       </div>
                       <WorkloadCard bureaus={data.bureaus} received30={data.kpis.received_30d} disposed30={data.kpis.disposed_30d} onPick={(b) => nav(caseLink({ bureau: b, active: '1' }))} />
@@ -162,8 +165,8 @@ export default function Dashboard() {
                 </div>
 
                 <div className="grid gap-5 2xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-                  <section className="glass rounded-[24px] p-5">
-                    <h2 className="text-base">Active cases by Bureau/Cell</h2>
+                  <section className="glass rounded-[10px] p-5">
+                    <h2 className="text-[13px]">Active cases by Bureau/Cell</h2>
                     <p className="mb-3 text-xs text-ink-3">Current status · click a bar to open those cases</p>
                     <BarsChart horizontal stacked height={250} data={data.bureaus.filter((b) => b.received)} x="code"
                       onClick={(row) => nav(caseLink({ bureau: String(row.code), active: '1' }))}
@@ -195,15 +198,15 @@ export default function Dashboard() {
                     </div>
                   </section>
                   <div className="space-y-5">
-                    <section className="glass rounded-[24px] p-5">
-                      <h2 className="text-base">Region-wise pending</h2>
+                    <section className="glass rounded-[10px] p-5">
+                      <h2 className="text-[13px]">Region-wise pending</h2>
                       <p className="mb-2 text-xs text-ink-3">Active and overdue cases</p>
                       <BarsChart horizontal height={240} data={data.regions.filter((r) => r.received)} x="code"
                         onClick={(row) => nav(caseLink({ region: String(row.code), active: '1' }))}
                         series={[{ key: 'pending', name: 'Active', color: 'var(--b2)' }, { key: 'beyond_sla', name: 'Overdue', color: 'var(--b1)' }]} />
                     </section>
-                    <section className="glass rounded-[24px] p-5">
-                      <h2 className="text-base">Pending case ageing</h2>
+                    <section className="glass rounded-[10px] p-5">
+                      <h2 className="text-[13px]">Pending case ageing</h2>
                       <p className="mb-2 text-xs text-ink-3">Days since receipt</p>
                       <BarsChart height={180} data={data.ageing} x="bucket" xFormatter={(v) => v.replace(' days', '')} series={[{ key: 'total', name: 'Pending cases', color: 'var(--b1)' }]} />
                       <p className="mt-1 text-xs text-ink-3">{num(data.ageing.slice(3).reduce((s, a) => s + Number(a.total), 0))} pending for more than 60 days · <Link className="font-medium text-ink underline-offset-2 hover:underline" to="/reports?type=ageing">Ageing report</Link></p>
@@ -212,10 +215,10 @@ export default function Dashboard() {
                 </div>
 
                 <div className="grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-                  <section className="glass rounded-[24px] p-5">
+                  <section className="glass rounded-[10px] p-5">
                     <div className="mb-3 flex items-center justify-between">
                       <div>
-                        <h2 className="text-base">Institution-wise case status</h2>
+                        <h2 className="text-[13px]">Institution-wise case status</h2>
                         <p className="text-xs text-ink-3">Institutions with the most active complaints</p>
                       </div>
                       <Link to="/institutions" className={pillLink}>All institutions</Link>
@@ -257,7 +260,11 @@ export default function Dashboard() {
   );
 }
 
-const pillLink = 'flex items-center gap-1.5 rounded-[12px] bg-surface-2 px-3 py-1.5 text-xs font-medium text-ink-2 hover:bg-surface-3 hover:text-ink';
+const pillLink = 'eyebrow flex items-center gap-1.5 rounded-[4px] border border-[var(--axis)] px-3 py-1.5 text-ink-2 hover:border-ink hover:text-ink';
+
+function SectionNo({ n, label }: { n: string; label: string }) {
+  return <div className="eyebrow flex items-center gap-3 text-ink-3"><span className="text-ink-2">.{n}</span><span className="h-px w-8 bg-[var(--axis)]" />{label}</div>;
+}
 
 function Greeting({ data }: { data: DashboardData }) {
   const { user } = useAuth();
@@ -266,12 +273,12 @@ function Greeting({ data }: { data: DashboardData }) {
   return (
     <div className="flex flex-wrap items-end justify-between gap-3">
       <div className="min-w-0">
-        <h1 className="text-[28px] font-bold leading-tight text-ink sm:text-[34px]">Hello, {firstName(user?.name)}</h1>
-        <p className="mt-0.5 text-sm text-ink-3">Welcome back! {data.kpis.not_started ? `${num(data.kpis.not_started)} new complaints are waiting for first action.` : 'Every complaint has been acted upon.'}</p>
+        <h1 className="text-[28px] font-bold leading-tight tracking-[0.12em] text-ink sm:text-[42px]">Hello, {firstName(user?.name)}</h1>
+        <p className="mt-1 text-sm text-ink-3">Welcome back! {data.kpis.not_started ? `${num(data.kpis.not_started)} new complaints are waiting for first action.` : 'Every complaint has been acted upon.'}</p>
       </div>
       <div className="sm:text-right">
         <div className="text-lg font-semibold leading-none text-ink tnum">{time}</div>
-        <div className="mt-1 text-xs text-ink-3">{today}</div>
+        <div className="eyebrow mt-1.5 text-[9.5px] text-ink-3">{today}</div>
       </div>
     </div>
   );
@@ -281,16 +288,17 @@ function Greeting({ data }: { data: DashboardData }) {
 function OverlapBanner({ data }: { data: DashboardData }) {
   const o = data.overlaps;
   return (
-    <Link to="/overlaps" className="group relative flex min-h-[176px] items-center overflow-hidden rounded-[24px] bg-surface-2 p-6 transition hover:bg-surface-3 sm:p-7">
-      <div className="relative z-[1] max-w-md sm:max-w-[58%]">
-        <div className="text-xs font-medium text-ink-3">Overlapping colleges · coordination required</div>
-        <h2 className="mt-1.5 text-[20px] leading-snug text-ink sm:text-[22px]">{o.open} colleges are being handled by more than one department</h2>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <span className="flex items-center gap-1.5 rounded-[14px] bg-accent px-4 py-2.5 text-[13px] font-medium text-accent-ink">Review overlaps <ArrowRight className="size-4 transition group-hover:translate-x-0.5" /></span>
-          <span className="text-xs text-ink-3">{o.rbPgrc} with both RB and PGRC</span>
+    <Link to="/overlaps" className="glass group relative flex min-h-[184px] items-center overflow-hidden rounded-[10px] p-6 transition hover:-translate-y-0.5 sm:p-8">
+      <div className="relative z-[1] max-w-md sm:max-w-[60%]">
+        <div className="eyebrow text-ink-3">Coordination required</div>
+        <div className="mt-2 flex items-baseline gap-4">
+          <span className="text-[54px] font-bold leading-none tracking-[0.04em] text-ink tnum [text-shadow:var(--title-glow)]">{o.open}</span>
+          <h2 className="text-[17px] leading-tight text-ink sm:text-[19px]">Overlapping<br />colleges</h2>
         </div>
+        <p className="mt-2 text-sm text-ink-3">Being handled by more than one department · {o.rbPgrc} with both RB and PGRC</p>
+        <span className="btn-raised mt-5 inline-flex items-center gap-2 rounded-[4px] px-5 py-2.5 text-[10.5px] font-medium uppercase tracking-[0.18em]">Review overlaps <ArrowRight className="size-3.5 transition group-hover:translate-x-0.5" /></span>
       </div>
-      <OverlapIllustration className="pointer-events-none absolute -right-3 bottom-0 hidden h-[168px] w-auto sm:block" />
+      <OverlapIllustration className="pointer-events-none absolute -right-3 bottom-0 hidden h-[168px] w-auto opacity-90 sm:block" />
     </Link>
   );
 }
@@ -302,13 +310,13 @@ function NeedsAttention() {
     queryFn: () => api<{ rows: CaseRow[] }>('/cases?active=1&sla=breached&sort=priority&dir=asc&size=4'),
   });
   return (
-    <section className="glass flex min-w-0 flex-col rounded-[24px] p-5">
-      <h2 className="text-base">Needs attention</h2>
+    <section className="glass flex min-w-0 flex-col rounded-[10px] p-5">
+      <h2 className="text-[13px]">Needs attention</h2>
       <p className="text-xs text-ink-3">Overdue cases, most urgent first</p>
       <ul className="mt-3 flex-1 space-y-1">
         {list?.rows.slice(0, 4).map((c) => (
           <li key={c.id}>
-            <Link to={`/cases/${c.id}`} className="-mx-2 flex items-center gap-3 rounded-[16px] px-2 py-2.5 transition hover:bg-surface-1">
+            <Link to={`/cases/${c.id}`} className="-mx-2 flex items-center gap-3 rounded-[6px] px-2 py-2.5 transition hover:bg-surface-1">
               <div className="min-w-0 flex-1">
                 <div className="truncate text-sm font-semibold text-ink">{c.subject}</div>
                 <div className="truncate text-xs text-ink-3">{shortNo(c.case_no)} · {c.institution_name ?? 'Unidentified institution'}</div>
@@ -320,7 +328,7 @@ function NeedsAttention() {
         {!list && <Spinner />}
         {list && !list.rows.length && <li className="py-6 text-center text-sm text-ink-3">Nothing is overdue.</li>}
       </ul>
-      <Link to="/cases?active=1&sla=breached" className="mt-2 flex items-center justify-center gap-1 rounded-[14px] bg-surface-2 py-2.5 text-[13px] font-medium text-ink-2 hover:bg-surface-3 hover:text-ink">
+      <Link to="/cases?active=1&sla=breached" className="eyebrow mt-3 flex items-center justify-center gap-1.5 rounded-[4px] border border-[var(--axis)] py-2.5 text-ink-2 hover:border-ink hover:text-ink">
         See all overdue cases <ArrowRight className="size-3.5" />
       </Link>
     </section>
@@ -346,16 +354,16 @@ function LateRing({ days }: { days: number }) {
 /** Dark "bank card" with one big number and a few small ones underneath. */
 function InkStat({ to, alt, label, value, sub, foot }: { to: string; alt: boolean; label: string; value: number; sub: string; foot: Array<[string, number]> }) {
   return (
-    <Link to={to} className={clsx('block rounded-[24px] p-5 shadow-[var(--shadow)] transition hover:-translate-y-0.5', alt ? 'ink-card-alt' : 'ink-card')}>
-      <div className="text-xs text-white/75">{label}</div>
-      <div className="mt-1 text-[34px] font-medium leading-none tracking-tight tnum">{num(value)}</div>
+    <Link to={to} className={clsx('block rounded-[10px] p-5 shadow-[var(--shadow)] transition hover:-translate-y-0.5', alt ? 'ink-card-alt' : 'ink-card')}>
+      <div className="eyebrow text-white/70">{label}</div>
+      <div className="mt-2 text-[36px] font-semibold leading-none tracking-[0.04em] tnum">{num(value)}</div>
       <div className="mt-1.5 text-xs text-white/75">{sub}</div>
       <div className="mt-5 flex items-end justify-between gap-3">
         <div className="flex gap-5">
           {foot.map(([l, v]) => (
             <div key={l}>
               <div className="text-[15px] font-medium leading-none tnum">{num(v)}</div>
-              <div className="mt-1 text-[10.5px] text-white/65">{l}</div>
+              <div className="mt-1 text-[9.5px] uppercase tracking-[0.14em] text-white/60">{l}</div>
             </div>
           ))}
         </div>
@@ -371,13 +379,13 @@ function TrendCard({ data }: { data: DashboardData }) {
   const [metric, setMetric] = useState<'received' | 'disposed'>('received');
   const rows = data.trend.slice(-6);
   return (
-    <section className="glass rounded-[24px] p-5">
+    <section className="glass rounded-[10px] p-5">
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-base">Complaints</h2>
-        <div className="flex rounded-[12px] bg-surface-2 p-1 text-xs font-medium" role="tablist" aria-label="Series">
+        <h2 className="text-[13px]">Complaints</h2>
+        <div className="flex gap-1 text-[10px] font-medium uppercase tracking-[0.14em]" role="tablist" aria-label="Series">
           {(['received', 'disposed'] as const).map((m) => (
             <button key={m} role="tab" aria-selected={metric === m} onClick={() => setMetric(m)}
-              className={clsx('rounded-[9px] px-2.5 py-1 capitalize transition', metric === m ? 'bg-accent text-accent-ink' : 'text-ink-3 hover:text-ink')}>{m}</button>
+              className={clsx('rounded-[4px] px-2.5 py-1.5 uppercase tracking-[0.14em] transition', metric === m ? 'btn-raised' : 'text-ink-3 hover:text-ink')}>{m}</button>
           ))}
         </div>
       </div>
@@ -412,8 +420,8 @@ function DisposalCard({ data, caseLink }: { data: DashboardData; caseLink: (e: R
     { label: 'Overdue', value: data.kpis.beyond_sla, dot: 'var(--critical)', to: caseLink({ sla: 'breached', active: '1' }) },
   ];
   return (
-    <section className="glass rounded-[24px] p-5">
-      <h2 className="text-base">Disposal rate</h2>
+    <section className="glass rounded-[10px] p-5">
+      <h2 className="text-[13px]">Disposal rate</h2>
       <p className="text-xs text-ink-3">Share of all complaints closed</p>
       <div className="relative mx-auto my-3 size-[170px]">
         <svg viewBox="0 0 160 160" className="-rotate-90" role="img" aria-label={`${Math.round(rate)}% of complaints disposed`}>
@@ -449,7 +457,7 @@ function Avatar({ label, color }: { label: string; color: string }) {
 
 function StripKpi({ icon, label, value, sub, to, accent, critical }: { icon: React.ReactNode; label: string; value: number; sub: string; to: string; accent?: boolean; critical?: boolean }) {
   return (
-    <Link to={to} className="group flex items-center gap-3 rounded-[20px] p-3 transition-colors hover:bg-surface-2 sm:p-4">
+    <Link to={to} className="group flex items-center gap-3 rounded-[10px] p-3 transition-colors hover:bg-surface-2 sm:p-4">
       <span className={clsx('flex size-12 shrink-0 items-center justify-center rounded-full',
         accent ? 'bg-accent text-accent-ink' : critical ? 'bg-critical-soft text-critical-text' : 'bg-accent-soft text-accent-text')}>{icon}</span>
       <span className="min-w-0">
@@ -463,7 +471,7 @@ function StripKpi({ icon, label, value, sub, to, accent, critical }: { icon: Rea
 
 function MiniKpi({ icon, label, value, sub, to }: { icon: React.ReactNode; label: string; value: number; sub: string; to: string }) {
   return (
-    <Link to={to} className="glass flex flex-col rounded-[20px] p-4 transition hover:-translate-y-0.5">
+    <Link to={to} className="glass flex flex-col rounded-[10px] p-4 transition hover:-translate-y-0.5">
       <span className="flex items-center justify-between text-xs text-ink-3">{label}<span className="flex size-7 items-center justify-center rounded-full bg-accent-soft text-accent-text">{icon}</span></span>
       <span className="mt-1 text-xl font-semibold tnum">{num(value)}</span>
       <span className="truncate text-[11px] text-ink-3">{sub}</span>
@@ -474,7 +482,7 @@ function MiniKpi({ icon, label, value, sub, to }: { icon: React.ReactNode; label
 function Goal({ label, value }: { label: string; value: number | null }) {
   const v = Math.max(0, Math.min(100, value ?? 0));
   return (
-    <div className="glass flex min-h-[128px] flex-col justify-between rounded-[20px] p-4">
+    <div className="glass flex min-h-[128px] flex-col justify-between rounded-[10px] p-4">
       <div className="text-[30px] font-light leading-none tracking-tight tnum">{value === null ? '—' : `${Math.round(v)}%`}</div>
       <div>
         <div className="h-2 overflow-hidden rounded-full bg-surface-3" role="progressbar" aria-valuenow={v} aria-valuemin={0} aria-valuemax={100} aria-label={label}>
@@ -493,7 +501,7 @@ function WorkloadCard({ bureaus, received30, disposed30, onPick }: { bureaus: Da
   const peak = Math.max(0, ...rows.map((b) => b.pending));
   const net = received30 - disposed30;
   return (
-    <div className="glass flex min-h-[128px] gap-3 rounded-[20px] p-4">
+    <div className="glass flex min-h-[128px] gap-3 rounded-[10px] p-4">
       <div className="flex min-w-0 flex-col justify-between">
         <div className="text-xs text-ink-3">Active cases</div>
         <div className="text-[28px] font-semibold leading-none tnum">{num(total)}</div>
@@ -527,7 +535,7 @@ function ActivityList({ data }: { data: DashboardData }) {
   return (
     <section>
       <div className="mb-3 flex items-center justify-between px-1">
-        <h2 className="text-base text-ink">Live activity</h2>
+        <h2 className="text-[13px] text-ink">Live activity</h2>
         <span className="flex items-center gap-1.5 text-xs text-ink-3"><span className={clsx('size-2 rounded-full', live.connected ? 'live-dot bg-good' : 'bg-muted')} />{live.connected ? 'Live' : 'Offline'}</span>
       </div>
       <div className="space-y-2.5">
@@ -535,7 +543,7 @@ function ActivityList({ data }: { data: DashboardData }) {
           const b = a.to_bureau ?? a.bureau_code;
           const fresh = live.events.some((e) => e.case_id === a.case_id && Date.now() - new Date(e.at).getTime() < 15000);
           return (
-            <Link key={a.id} to={`/cases/${a.case_id}`} className={clsx('glass block rounded-[20px] p-3.5 transition hover:-translate-y-0.5', fresh && 'flash')}>
+            <Link key={a.id} to={`/cases/${a.case_id}`} className={clsx('glass block rounded-[10px] p-3.5 transition hover:-translate-y-0.5', fresh && 'flash')}>
               <div className="flex items-center gap-3">
                 <Avatar label={b} color={bureauColor(b)} />
                 <div className="min-w-0 flex-1">
@@ -554,7 +562,7 @@ function ActivityList({ data }: { data: DashboardData }) {
             </Link>
           );
         })}
-        <Link to="/cases" className="glass flex items-center justify-between rounded-[20px] px-4 py-3.5 text-sm font-medium hover:text-accent-text">
+        <Link to="/cases" className="glass flex items-center justify-between rounded-[10px] px-4 py-3.5 text-sm font-medium hover:text-accent-text">
           See all cases <ArrowRight className="size-4" />
         </Link>
       </div>
@@ -565,13 +573,13 @@ function ActivityList({ data }: { data: DashboardData }) {
 function OverlapWatch({ data }: { data: DashboardData }) {
   if (!data.overlaps.top.length) return null;
   return (
-    <section className="glass rounded-[24px] p-5">
-      <h2 className="text-base">Overlap watch</h2>
+    <section className="glass rounded-[10px] p-5">
+      <h2 className="text-[13px]">Overlap watch</h2>
       <p className="mb-3 text-xs text-ink-3">Parallel action by multiple Bureaus/Cells</p>
       <ul className="space-y-2">
         {data.overlaps.top.slice(0, 3).map((o) => (
           <li key={o.institution_id}>
-            <Link to={`/overlaps#inst-${o.institution_id}`} className="tile block rounded-2xl p-3 hover:bg-surface-2">
+            <Link to={`/overlaps#inst-${o.institution_id}`} className="tile block rounded-lg p-3 hover:bg-surface-2">
               <div className="flex items-start justify-between gap-2">
                 <span className="text-sm font-medium leading-snug">{o.institution?.name}</span>
                 <SeverityBadge severity={o.severity} />

@@ -9,11 +9,11 @@ import type { SlaState, Severity, Status } from '../lib/types';
 
 export function Card({ title, subtitle, actions, children, className, bodyClass, id }: { title?: ReactNode; subtitle?: ReactNode; actions?: ReactNode; children: ReactNode; className?: string; bodyClass?: string; id?: string }) {
   return (
-    <section id={id} className={clsx('glass rounded-[24px]', className)}>
+    <section id={id} className={clsx('glass rounded-[10px]', className)}>
       {(title || actions) && (
         <header className="flex flex-wrap items-start justify-between gap-2 px-5 pb-2 pt-5">
           <div className="min-w-0">
-            {title && <h2 className="text-base text-ink">{title}</h2>}
+            {title && <h2 className="text-[13px] text-ink">{title}</h2>}
             {subtitle && <p className="mt-0.5 text-xs text-ink-3">{subtitle}</p>}
           </div>
           {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
@@ -29,7 +29,7 @@ export function PageHeader({ title, subtitle, actions, crumbs }: { title: ReactN
     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
       <div className="min-w-0">
         {crumbs && (
-          <nav className="mb-1.5 flex flex-wrap items-center gap-1.5 text-xs text-ink-3">
+          <nav className="eyebrow mb-2 flex flex-wrap items-center gap-1.5 text-ink-3">
             {crumbs.map((c, i) => (
               <span key={i} className="flex items-center gap-1">
                 {i > 0 && <span>/</span>}
@@ -38,7 +38,7 @@ export function PageHeader({ title, subtitle, actions, crumbs }: { title: ReactN
             ))}
           </nav>
         )}
-        <h1 className="text-[26px] leading-tight text-ink sm:text-[32px]">{title}</h1>
+        <h1 className="text-[24px] leading-tight text-ink sm:text-[30px]">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-ink-3">{subtitle}</p>}
       </div>
       {actions && <div className="no-print flex flex-wrap items-center gap-2">{actions}</div>}
@@ -53,10 +53,10 @@ export function Button({ variant = 'secondary', size = 'md', className, loading,
       {...rest}
       disabled={rest.disabled || loading}
       className={clsx(
-        'inline-flex items-center justify-center gap-1.5 rounded-[14px] font-medium transition-all disabled:cursor-not-allowed disabled:opacity-50',
-        size === 'sm' ? 'h-8 px-3 text-xs' : 'h-10 px-4 text-sm',
-        variant === 'primary' && 'bg-accent text-accent-ink hover:opacity-90',
-        variant === 'secondary' && 'bg-surface-2 text-ink hover:bg-surface-3',
+        'inline-flex items-center justify-center gap-1.5 rounded-[4px] font-medium uppercase tracking-[0.14em] transition-all disabled:cursor-not-allowed disabled:opacity-50',
+        size === 'sm' ? 'h-8 px-3 text-[10px]' : 'h-10 px-5 text-[11px]',
+        variant === 'primary' && 'btn-raised hover:brightness-125',
+        variant === 'secondary' && 'border border-[var(--axis)] text-ink hover:border-ink',
         variant === 'ghost' && 'text-ink-2 hover:bg-surface-2 hover:text-ink',
         variant === 'danger' && 'bg-critical text-white shadow-[0_10px_26px_-10px_var(--critical)] hover:brightness-110',
         className,
@@ -71,18 +71,18 @@ export function Button({ variant = 'secondary', size = 'md', className, loading,
 export function Field({ label, hint, children, className, required }: { label: string; hint?: ReactNode; children: ReactNode; className?: string; required?: boolean }) {
   return (
     <label className={clsx('block', className)}>
-      <span className="mb-1 block text-xs font-medium text-ink-2">{label}{required && <span className="text-critical-text"> *</span>}</span>
+      <span className="eyebrow mb-0.5 block text-ink-3">{label}{required && <span className="text-critical-text"> *</span>}</span>
       {children}
       {hint && <span className="mt-1 block text-xs text-ink-3">{hint}</span>}
     </label>
   );
 }
-const ctlBase = 'border border-transparent bg-surface-2 px-3.5 text-sm text-ink placeholder:text-ink-3 transition-colors focus:border-[var(--axis)] focus:bg-panel focus:outline-none';
+const ctlBase = 'border-0 border-b border-[var(--axis)] bg-transparent px-1 text-sm text-ink placeholder:text-ink-3 transition-colors focus:border-ink focus:outline-none';
 // Full width unless the caller sets its own width.
 const ctl = (className?: string) => clsx(ctlBase, !/(^|\s)(w-|min-w-)/.test(className ?? '') && 'w-full', className);
-export const Input = ({ className, ...p }: InputHTMLAttributes<HTMLInputElement>) => <input {...p} className={clsx(ctl(className), 'h-10 rounded-[14px]')} />;
-export const Textarea = ({ className, ...p }: TextareaHTMLAttributes<HTMLTextAreaElement>) => <textarea {...p} className={clsx(ctl(className), 'rounded-2xl py-2.5')} />;
-export const Select = ({ className, children, ...p }: SelectHTMLAttributes<HTMLSelectElement>) => <select {...p} className={clsx(ctl(className), 'h-10 rounded-[14px] pr-8')}>{children}</select>;
+export const Input = ({ className, ...p }: InputHTMLAttributes<HTMLInputElement>) => <input {...p} className={clsx(ctl(className), 'h-10 rounded-none')} />;
+export const Textarea = ({ className, ...p }: TextareaHTMLAttributes<HTMLTextAreaElement>) => <textarea {...p} className={clsx(ctl(className), 'rounded-none py-2.5')} />;
+export const Select = ({ className, children, ...p }: SelectHTMLAttributes<HTMLSelectElement>) => <select {...p} className={clsx(ctl(className), 'h-10 rounded-none pr-6')}>{children}</select>;
 
 export function Spinner({ label = 'Loading…' }: { label?: string }) {
   return <div className="flex items-center justify-center gap-2 py-10 text-sm text-ink-3"><LoaderCircle className="size-5 animate-spin" />{label}</div>;
@@ -98,7 +98,7 @@ export function Empty({ icon, title, body }: { icon?: ReactNode; title: string; 
 }
 export function ErrorBox({ error }: { error: unknown }) {
   if (!error) return null;
-  return <div className="rounded-2xl border border-critical/30 bg-critical-soft px-3.5 py-2.5 text-sm text-critical-text">{(error as Error).message || String(error)}</div>;
+  return <div className="rounded-lg border border-critical/30 bg-critical-soft px-3.5 py-2.5 text-sm text-critical-text">{(error as Error).message || String(error)}</div>;
 }
 
 // ---------- badges ----------
@@ -167,8 +167,8 @@ export function Tabs<T extends string>({ tabs, value, onChange }: { tabs: Array<
       <div className="inline-flex gap-2" role="tablist">
       {tabs.map((t) => (
         <button key={t.value} role="tab" aria-selected={value === t.value} onClick={() => onChange(t.value)}
-          className={clsx('flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[14px] px-4 py-2.5 text-[13px] font-medium transition-all',
-            value === t.value ? 'bg-accent text-accent-ink' : 'bg-surface-2 text-ink-2 hover:bg-surface-3 hover:text-ink')}>
+          className={clsx('eyebrow flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[4px] px-4 py-2.5 transition-all',
+            value === t.value ? 'btn-raised' : 'text-ink-3 hover:text-ink')}>
           {t.label}
           {t.count !== undefined && <span className={clsx('rounded-full px-1.5 text-[11px] tnum', value === t.value ? 'bg-white/15' : 'bg-surface-2 text-ink-2')}>{t.count}</span>}
         </button>
@@ -189,9 +189,9 @@ export function Modal({ open, onClose, title, children, footer, wide }: { open: 
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-4" onMouseDown={onClose}>
-      <div role="dialog" aria-modal className={clsx('glass-pop max-h-[92vh] w-full overflow-auto rounded-t-[28px] sm:rounded-[28px]', wide ? 'sm:max-w-3xl' : 'sm:max-w-lg')} onMouseDown={(e) => e.stopPropagation()}>
+      <div role="dialog" aria-modal className={clsx('glass-pop max-h-[92vh] w-full overflow-auto rounded-t-[10px] sm:rounded-[10px]', wide ? 'sm:max-w-3xl' : 'sm:max-w-lg')} onMouseDown={(e) => e.stopPropagation()}>
         <div className="sticky top-0 z-10 flex items-center justify-between bg-[var(--popover)] px-6 pb-2 pt-5">
-          <h3 className="text-lg">{title}</h3>
+          <h3 className="text-sm">{title}</h3>
           <button onClick={onClose} className="rounded-full p-1.5 text-ink-3 hover:bg-surface-2" aria-label="Close"><X className="size-5" /></button>
         </div>
         <div className="px-6 py-3">{children}</div>
@@ -204,7 +204,7 @@ export function Modal({ open, onClose, title, children, footer, wide }: { open: 
 export function KeyVal({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="min-w-0">
-      <dt className="text-xs text-ink-3">{label}</dt>
+      <dt className="eyebrow text-[9.5px] text-ink-3">{label}</dt>
       <dd className="mt-0.5 break-words text-sm text-ink">{children ?? '—'}</dd>
     </div>
   );

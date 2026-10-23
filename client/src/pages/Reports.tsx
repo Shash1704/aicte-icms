@@ -75,7 +75,7 @@ export default function Reports() {
           {data.summary && (
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {Object.entries(data.summary).map(([k, v]) => (
-                <div key={k} className="glass rounded-[22px] p-4"><div className="text-xs capitalize text-ink-2">{k.replace(/([A-Z])/g, ' $1')}</div><div className="mt-1 text-2xl font-semibold tnum">{num(v)}</div></div>
+                <div key={k} className="glass rounded-[10px] p-4"><div className="text-xs capitalize text-ink-2">{k.replace(/([A-Z])/g, ' $1')}</div><div className="mt-1 text-2xl font-semibold tnum">{num(v)}</div></div>
               ))}
             </div>
           )}

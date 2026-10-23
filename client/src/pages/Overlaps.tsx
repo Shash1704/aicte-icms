@@ -82,7 +82,7 @@ function OverlapCard({ g }: { g: OverlapGroup }) {
   const strongPairs = g.pairs.filter((p) => p.similarity >= 0.25 || p.sameComplainant).sort((a, b) => b.similarity - a.similarity).slice(0, 3);
 
   return (
-    <section id={`inst-${g.institution_id}`} className={clsx('glass scroll-mt-24 rounded-[28px] transition-shadow', g.status === 'open' && 'ring-1 ring-critical/35')}>
+    <section id={`inst-${g.institution_id}`} className={clsx('glass scroll-mt-24 rounded-[10px] transition-shadow', g.status === 'open' && 'ring-1 ring-critical/35')}>
       <header className="flex flex-wrap items-start gap-3 border-b border-hairline px-5 py-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -106,10 +106,10 @@ function OverlapCard({ g }: { g: OverlapGroup }) {
       </header>
       <div className="px-5 py-4">
         <ul className="mb-3 space-y-0.5 text-sm text-ink-2">{g.reasons.map((r) => <li key={r} className="flex gap-2"><span className="text-muted">•</span>{r}</li>)}</ul>
-        {g.note && <p className="mb-3 rounded-2xl bg-surface-2 px-3 py-2 text-sm text-ink-2"><b>Coordination note:</b> {g.note}</p>}
+        {g.note && <p className="mb-3 rounded-lg bg-surface-2 px-3 py-2 text-sm text-ink-2"><b>Coordination note:</b> {g.note}</p>}
         <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(auto-fit, minmax(240px, 1fr))` }}>
           {byBureau.map(({ b, cases }) => (
-            <div key={b} className="tile rounded-2xl">
+            <div key={b} className="tile rounded-lg">
               <div className="flex items-center gap-2 border-b border-hairline px-3.5 py-2.5 text-sm font-semibold"><span className="size-2.5 rounded-full" style={{ background: bureauColor(b) }} />
                 {bureauName(b)}{g.lead_bureau === b && <span className="rounded bg-good-soft px-1.5 text-xs text-good-text">lead</span>}
               </div>
@@ -172,7 +172,7 @@ function Duplicates() {
               </div>
               <div className="mt-2 grid gap-2 md:grid-cols-2">
                 {[p.a, p.b].map((c) => (
-                  <Link key={c.id} to={`/cases/${c.id}`} className="tile rounded-2xl p-3 hover:border-accent">
+                  <Link key={c.id} to={`/cases/${c.id}`} className="tile rounded-lg p-3 hover:border-accent">
                     <div className="flex items-center gap-2"><BureauChip code={c.bureau_code} /><span className="text-sm font-medium">{c.case_no}</span><span className="ml-auto"><StatusBadge status={c.status} /></span></div>
                     <div className="mt-1 text-sm">{c.subject}</div>
                     <div className="text-xs text-ink-3">{fmtDate(c.received_on)} · {c.complainant_name ?? '—'}</div>
@@ -213,7 +213,7 @@ function IdentifyQueue() {
             <span className="text-ink-2">{q.subject}</span><span className="ml-auto text-xs text-ink-3">{fmtDate(q.received_on)}</span>
           </div>
           <div className="mt-1 text-sm">Written as: <b>“{q.institution_name_raw}”</b>{q.aicte_id_raw && <> · ID {q.aicte_id_raw}</>}{q.institution_city_raw && <> · {q.institution_city_raw}</>}</div>
-          <ul className="mt-2 divide-y divide-hairline tile rounded-2xl">
+          <ul className="mt-2 divide-y divide-hairline tile rounded-lg">
             {q.candidates.map((c) => (
               <li key={c.institution.id} className="flex flex-wrap items-center gap-3 px-3 py-2">
                 <div className="min-w-0 flex-1"><div className="text-sm font-medium">{c.institution.name}</div><div className="text-xs text-ink-3">{c.institution.aicte_id} · {c.institution.city} · {c.reasons.join(' · ')}</div></div>

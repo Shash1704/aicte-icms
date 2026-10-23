@@ -30,60 +30,66 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-3 sm:p-8">
-      <div className="grid w-full max-w-[1120px] gap-4 rounded-[28px] bg-main p-3 shadow-[var(--shell-shadow)] sm:p-4 lg:grid-cols-[1fr_1fr]">
-        <div className="ink-card hidden flex-col rounded-[22px] p-9 lg:flex">
-          <div className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-full bg-white text-[#1d1d1f]">
-              <svg viewBox="0 0 32 32" className="size-5" aria-hidden><path d="M7 23V9h4.4L16 17l4.6-8H25v14h-3.8v-7.4L17.2 22h-2.4l-4-6.4V23z" fill="currentColor" /></svg>
-            </span>
-            <span className="text-xs text-white/75">All India Council for Technical Education</span>
+      <div className="w-full max-w-[1120px]">
+        <div className="eyebrow mb-3 flex justify-between px-1 text-ink-3"><span>.01 · Sign in</span><span>SIH26264 · Team Varangians</span></div>
+        <div className="grid overflow-hidden rounded-[10px] bg-main shadow-[var(--shell-shadow)] lg:grid-cols-[1.1fr_1fr]">
+          <div className="relative hidden min-h-[560px] flex-col p-10 lg:flex">
+            <div className="flex items-start justify-between">
+              <span className="text-[14px] font-bold leading-[1.05] tracking-[0.18em]">IC<br />MS</span>
+              <span className="eyebrow text-ink-3">AICTE</span>
+            </div>
+            <div className="my-auto text-center">
+              <div className="eyebrow text-ink-3">— One window —</div>
+              <h1 className="mt-3 text-[84px] font-bold leading-none tracking-[0.1em]">ICMS</h1>
+              <p className="eyebrow mt-4 text-ink-3">Integrated complaint monitoring</p>
+            </div>
+            <ul className="grid grid-cols-2 gap-x-8 gap-y-5">
+              {FEATURES.map((f) => (
+                <li key={f.title} className="flex gap-3">
+                  <f.icon className="mt-0.5 size-4 shrink-0 text-ink-2" strokeWidth={1.6} />
+                  <div className="text-xs leading-relaxed text-ink-3"><span className="font-medium text-ink-2">{f.title}.</span> {f.body}</div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <h1 className="mt-14 max-w-md text-[40px] font-bold leading-[1.08]">Every institution complaint, in one place.</h1>
-          <p className="mt-3 max-w-sm text-sm text-white/75">One shared view for the Regulation Bureau, PGRC, other Bureaus/Cells and Regional Offices.</p>
-          <ul className="mt-auto grid grid-cols-2 gap-3 pt-10">
-            {FEATURES.map((f) => (
-              <li key={f.title} className="rounded-[18px] bg-white/10 p-4 backdrop-blur-sm">
-                <f.icon className="size-4" />
-                <div className="mt-2 text-[13px] font-medium">{f.title}</div>
-              </li>
-            ))}
-          </ul>
-        </div>
 
-        <div className="w-full px-3 py-6 sm:px-8 sm:py-10">
-          <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <LogoMark className="size-10" />
-            <div>
-              <div className="text-xs text-ink-3">AICTE</div>
-              <div className="text-lg font-semibold">Complaint Monitoring</div>
-            </div>
-          </div>
-          <form className="mx-auto max-w-md" onSubmit={(e) => { e.preventDefault(); submit(); }}>
-            <h2 className="text-[30px] font-bold leading-tight">Sign in</h2>
-            <p className="mt-1 text-sm text-ink-3">For authorised AICTE officials only.</p>
-            {DEMO && <p className="mt-4 rounded-[14px] bg-surface-2 px-3.5 py-2.5 text-xs leading-relaxed text-ink-2">Live demo: runs entirely in your browser with synthetic data. Pick a demo account below.</p>}
-            <div className="mt-6 space-y-4">
-              <Field label="Username"><Input autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} required /></Field>
-              <Field label="Password"><Input type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required /></Field>
-              <ErrorBox error={error} />
-              <Button variant="primary" className="h-11 w-full" loading={busy} type="submit">Sign in</Button>
-            </div>
-          </form>
-          {!!demo.length && (
-            <div className="mx-auto mt-8 max-w-md">
-              <div className="mb-3 text-xs font-medium text-ink-3">Demo accounts · password <code className="rounded-md bg-surface-2 px-1.5 py-0.5">Aicte@2026</code> · click to sign in</div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {demo.map((d) => (
-                  <button key={d.username} onClick={() => submit(d.username, 'Aicte@2026')} disabled={busy}
-                    className="rounded-[16px] bg-surface-2 px-4 py-3 text-left transition hover:bg-surface-3">
-                    <div className="text-sm font-medium">{d.designation}</div>
-                    <div className="text-xs text-ink-3">{d.username} · {d.name}</div>
-                  </button>
-                ))}
+          <div className="glass m-0 rounded-none px-6 py-10 sm:px-12 lg:m-4 lg:rounded-[8px]">
+            <div className="mb-8 flex items-center gap-3 lg:hidden">
+              <LogoMark className="size-10" />
+              <div>
+                <div className="eyebrow text-ink-3">AICTE</div>
+                <div className="text-lg font-semibold uppercase tracking-[0.1em]">ICMS</div>
               </div>
             </div>
-          )}
-          <p className="mx-auto mt-8 max-w-md text-xs text-ink-3">Smart India Hackathon 2026 · SIH26264 · Team Varangians</p>
+            <form className="mx-auto max-w-sm" onSubmit={(e) => { e.preventDefault(); submit(); }}>
+              <h2 className="text-center text-[22px] tracking-[0.14em]">Sign in</h2>
+              <p className="eyebrow mt-2 text-center text-[9.5px] text-ink-3">Authorised AICTE officials only</p>
+              {DEMO && <p className="mt-6 border-l border-[var(--axis)] pl-3 text-xs leading-relaxed text-ink-3">Live demo: runs entirely in your browser with synthetic data. Pick a demo account below.</p>}
+              <div className="mt-6 space-y-5">
+                <Field label="Username"><Input autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} required /></Field>
+                <Field label="Password"><Input type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required /></Field>
+                <ErrorBox error={error} />
+                <div className="flex justify-center pt-2"><Button variant="primary" className="h-11 px-8" loading={busy} type="submit">Sign in →</Button></div>
+              </div>
+            </form>
+            {!!demo.length && (
+              <div className="mx-auto mt-10 max-w-sm">
+                <div className="eyebrow mb-3 text-ink-3">Demo accounts · password <code className="normal-case tracking-normal text-ink-2">Aicte@2026</code></div>
+                <div className="divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
+                  {demo.map((d) => (
+                    <button key={d.username} onClick={() => submit(d.username, 'Aicte@2026')} disabled={busy}
+                      className="group flex w-full items-center justify-between gap-3 py-2.5 text-left">
+                      <span className="min-w-0">
+                        <span className="block truncate text-[13px] text-ink-2 group-hover:text-ink">{d.designation}</span>
+                        <span className="block truncate text-[11px] text-ink-3">{d.username} · {d.name}</span>
+                      </span>
+                      <span className="text-ink-3 transition group-hover:translate-x-0.5 group-hover:text-ink">→</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

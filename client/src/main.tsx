@@ -2,10 +2,7 @@ import { StrictMode, Suspense, lazy, useEffect, useState, type ReactNode } from 
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import '@fontsource/poppins/400.css';
-import '@fontsource/poppins/500.css';
-import '@fontsource/poppins/600.css';
-import '@fontsource/poppins/700.css';
+import '@fontsource-variable/jost';
 import './index.css';
 import { AuthProvider, LiveProvider, ToastProvider, useAuth, useTheme } from './lib/context';
 import Layout, { LogoMark } from './components/Layout';
@@ -50,7 +47,7 @@ function DemoGate({ children }: { children: ReactNode }) {
     <>
       <Backdrop />
       <div className="flex min-h-screen items-center justify-center p-6">
-        <div className="glass w-full max-w-sm rounded-[32px] p-8 text-center">
+        <div className="glass w-full max-w-sm rounded-[10px] p-8 text-center">
           <LogoMark className="mx-auto size-12" />
           <h1 className="mt-4 text-xl font-bold tracking-tight">AICTE ICMS · Live demo</h1>
           {error ? (

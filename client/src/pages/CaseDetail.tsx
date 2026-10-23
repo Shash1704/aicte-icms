@@ -153,7 +153,7 @@ function OverlapBanner({ c }: { c: TCase }) {
   const g = c.overlap!;
   const others = g.cases.filter((x) => x.id !== c.id);
   return (
-    <div className="mb-4 rounded-[28px] border border-critical/35 bg-critical-soft p-5 backdrop-blur-xl">
+    <div className="mb-4 rounded-[10px] border border-critical/35 bg-critical-soft p-5 backdrop-blur-xl">
       <div className="flex flex-wrap items-center gap-2">
         <GitMerge className="size-5 text-critical-text" />
         <span className="font-semibold text-critical-text">Potential Overlapping Cases – Coordination Required</span>
@@ -163,7 +163,7 @@ function OverlapBanner({ c }: { c: TCase }) {
       <ul className="mt-2 list-disc space-y-0.5 pl-5 text-sm text-ink-2">{g.reasons.map((r) => <li key={r}>{r}</li>)}</ul>
       <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {others.map((o) => (
-          <Link key={o.id} to={`/cases/${o.id}`} className="tile rounded-2xl p-3 hover:border-accent">
+          <Link key={o.id} to={`/cases/${o.id}`} className="tile rounded-lg p-3 hover:border-accent">
             <div className="flex items-center gap-2"><BureauChip code={o.bureau_code} /><span className="text-sm font-medium">{o.case_no}</span></div>
             <div className="mt-1 truncate text-xs text-ink-2">{o.subject}</div>
             <div className="mt-1 flex items-center gap-2 text-xs text-ink-3"><StatusBadge status={o.status} />{o.officer_name}</div>
@@ -238,7 +238,7 @@ function Timeline({ actions, docs }: { actions: CaseAction[]; docs: TCase['docum
                   <span>{a.actor_name ?? 'System'}{a.actor_designation ? `, ${a.actor_designation}` : ''}</span>
                   {a.bureau_code && <><span>·</span><span className="inline-flex items-center gap-1"><span className="size-1.5 rounded-full" style={{ background: bureauColor(a.bureau_code) }} />{bureauName(a.bureau_code)}</span></>}
                 </div>
-                {a.remarks && <p className="mt-1.5 rounded-2xl bg-surface-2 px-3 py-2 text-sm text-ink-2">{a.remarks}</p>}
+                {a.remarks && <p className="mt-1.5 rounded-lg bg-surface-2 px-3 py-2 text-sm text-ink-2">{a.remarks}</p>}
                 {a.next_action && a.action_type !== 'ASSIGNED' && <div className="mt-1 text-xs text-ink-3">Next: {a.next_action}{a.next_action_due && ` (by ${fmtDate(a.next_action_due)})`}</div>}
                 {!!aDocs.length && (
                   <div className="mt-1.5 flex flex-wrap gap-2">
@@ -378,7 +378,7 @@ function LinksCard({ c }: { c: TCase }) {
   return (
     <Card title="Linked cases" actions={<Button size="sm" variant="ghost" onClick={() => setOpen((o) => !o)}><Link2 className="size-3.5" />Link</Button>}>
       {open && (
-        <form className="mb-3 space-y-2 rounded-2xl bg-surface-2 p-3" onSubmit={(e) => { e.preventDefault(); add.mutate(); }}>
+        <form className="mb-3 space-y-2 rounded-lg bg-surface-2 p-3" onSubmit={(e) => { e.preventDefault(); add.mutate(); }}>
           <Input placeholder="Case ID e.g. AICTE/RB/2026/00012" value={other} onChange={(e) => setOther(e.target.value)} required />
           <div className="flex gap-2">
             <Select value={type} onChange={(e) => setType(e.target.value)}><option value="related">Related</option><option value="overlap">Overlap</option><option value="duplicate">Duplicate</option></Select>
@@ -416,7 +416,7 @@ function DuplicatesCard({ c }: { c: TCase }) {
       {list.length ? (
         <ul className="space-y-3">
           {list.map((d) => (
-            <li key={d.key} className="tile rounded-2xl p-3">
+            <li key={d.key} className="tile rounded-lg p-3">
               <div className="flex items-center gap-2">
                 <Link to={`/cases/${d.other!.id}`} className="text-sm font-medium hover:underline">{d.other!.case_no}</Link>
                 <BureauChip code={d.other!.bureau_code} /><ScoreBar value={d.score} className="ml-auto" />

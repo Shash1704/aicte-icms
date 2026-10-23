@@ -33,7 +33,7 @@ export default function InstitutionDetail() {
         actions={<Link to={`/cases?institution_id=${d.id}`} className="text-sm font-medium text-accent-text hover:underline">Open in case register</Link>} />
 
       {d.overlap && (
-        <div className="mb-4 flex flex-col gap-2 rounded-[28px] border border-critical/35 bg-critical-soft p-5 backdrop-blur-xl sm:flex-row sm:items-center">
+        <div className="mb-4 flex flex-col gap-2 rounded-[10px] border border-critical/35 bg-critical-soft p-5 backdrop-blur-xl sm:flex-row sm:items-center">
           <GitMerge className="size-6 shrink-0 text-critical-text" />
           <div className="flex-1">
             <div className="flex flex-wrap items-center gap-2"><span className="font-semibold text-critical-text">Potential Overlapping Cases – Coordination Required</span><SeverityBadge severity={d.overlap.severity} /><span className="rounded-full bg-surface px-2 py-0.5 text-xs">{d.overlap.status}{d.overlap.lead_bureau ? ` · lead ${d.overlap.lead_bureau}` : ''}</span></div>
@@ -50,7 +50,7 @@ export default function InstitutionDetail() {
           ['Beyond timeline', active.filter((c) => c.sla === 'breached').length],
           ['Bureaus/Cells involved (active)', new Set(active.map((c) => c.bureau_code)).size],
         ].map(([l, v]) => (
-          <div key={l as string} className="glass rounded-[22px] p-4"><div className="text-xs text-ink-2">{l}</div><div className="mt-1 text-2xl font-semibold tnum">{v}</div></div>
+          <div key={l as string} className="glass rounded-[10px] p-4"><div className="text-xs text-ink-2">{l}</div><div className="mt-1 text-2xl font-semibold tnum">{v}</div></div>
         ))}
       </div>
 
@@ -195,7 +195,7 @@ function Swimlanes({ cases }: { cases: CaseRow[] }) {
         })}
       </svg>
       {hover && (
-        <div className="pointer-events-none absolute z-10 w-64 tile rounded-2xl bg-surface px-3 py-2 text-xs shadow-lg" style={{ left: Math.min(hover.x, w - 260), top: hover.y + 14 }}>
+        <div className="pointer-events-none absolute z-10 w-64 tile rounded-lg bg-surface px-3 py-2 text-xs shadow-lg" style={{ left: Math.min(hover.x, w - 260), top: hover.y + 14 }}>
           <div className="font-semibold">{hover.c.case_no}</div>
           <div className="text-ink-2">{hover.c.subject}</div>
           <div className="mt-1 text-ink-3">{fmtDate(hover.c.received_on)} → {hover.c.disposed_on ? fmtDate(hover.c.disposed_on) : 'active'} · {hover.c.status}</div>
