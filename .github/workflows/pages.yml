@@ -1,0 +1,67 @@
+# Tests the server, builds the browser-only demo and publishes it to GitHub Pages.
+name: Deploy demo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+        working-directory: server
+      - run: npm test
+        working-directory: server
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+        working-directory: client
+      - name: Build browser-only demo
+        working-directory: client
+        env:
+          PAGES_BASE: /${{ github.event.repository.name }}/
+        run: |
+          npx tsc -b
+          npx vite build --mode demo
+          cp dist-demo/index.html dist-demo/404.html   # deep links (e.g. /cases/12) load the app
+          touch dist-demo/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: client/dist-demo
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

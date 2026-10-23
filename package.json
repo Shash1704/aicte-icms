@@ -1,0 +1,19 @@
+{
+  "name": "aicte-icms",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AICTE Integrated Complaint Monitoring Dashboard \u2014 SIH 2026 PS SIH26264",
+  "scripts": {
+    "setup": "npm --prefix server install && npm --prefix client install",
+    "seed": "npm --prefix server run seed",
+    "dev": "node scripts/dev.mjs",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start",
+    "test": "npm --prefix server test",
+    "typecheck": "cd client && npx tsc -b",
+    "build:demo": "npm --prefix client exec -- vite build --mode demo"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}
