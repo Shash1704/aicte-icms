@@ -233,7 +233,7 @@ function GreetingCard({ data }: { data: DashboardData }) {
         <p className="mt-1 text-sm text-ink-3">{data.kpis.not_started ? `${num(data.kpis.not_started)} new complaints are waiting for first action.` : 'Every complaint has been acted upon.'}</p>
         <p className="mt-6 text-5xl font-light tracking-tight text-ink tnum sm:text-[56px]">{time}</p>
       </div>
-      <CoordinationIllustration className="pointer-events-none absolute -bottom-2 right-2 hidden h-[190px] w-auto sm:block md:right-8" />
+      <CoordinationIllustration className="pointer-events-none absolute -bottom-2 right-4 hidden h-[150px] w-auto md:block lg:hidden xl:right-8 xl:block xl:h-[190px]" />
     </section>
   );
 }
