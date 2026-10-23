@@ -122,10 +122,10 @@ export default function Cases() {
         </div>
         {isLoading ? <Spinner /> : !data?.rows.length ? <Empty title="No cases match these filters" body="Try removing a filter or widening the date range." /> : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[900px] text-sm">
+            <table className="w-full min-w-[760px] text-sm">
               <thead className="border-b border-hairline bg-surface-1">
                 <tr>
-                  <Th k="received_on" {...sortProps}>Case ID · received</Th><Th k="institution" {...sortProps}>Institution</Th><Th>Complaint</Th>
+                  <Th k="received_on" {...sortProps}>Case ID · received</Th><Th k="institution" {...sortProps}>Institution</Th><Th className="hidden 2xl:table-cell">Complaint</Th>
                   <Th k="bureau" {...sortProps}>With · officer</Th><Th k="status" {...sortProps}>Status · priority</Th><Th k="last_action_on" {...sortProps}>Last action · next action</Th><Th k="days_left" {...sortProps}>Timeline</Th>
                 </tr>
               </thead>
@@ -146,7 +146,7 @@ export default function Cases() {
                         <div className="flex items-start gap-1.5 text-warning-text"><HelpCircle className="mt-0.5 size-4 shrink-0" /><div className="min-w-0"><div className="truncate">“{c.institution_name_raw}”</div><div className="text-xs">needs identification</div></div></div>
                       )}
                     </td>
-                    <td className="max-w-40 px-2.5 py-2.5"><div className="truncate text-ink-2" title={c.subject}>{c.subject}</div><div className="truncate text-xs text-ink-3">{categoryName(c.category)}</div></td>
+                    <td className="hidden max-w-40 px-2.5 py-2.5 2xl:table-cell"><div className="truncate text-ink-2" title={c.subject}>{c.subject}</div><div className="truncate text-xs text-ink-3">{categoryName(c.category)}</div></td>
                     <td className="px-2.5 py-2.5"><BureauChip code={c.bureau_code} /><div className="mt-0.5 max-w-32 truncate text-xs text-ink-3">{c.officer_name ?? 'Unassigned'}</div></td>
                     <td className="px-2.5 py-2.5"><StatusBadge status={c.status} />{(c.priority === 'High' || c.priority === 'Critical') && <div className="mt-1"><PriorityBadge priority={c.priority} /></div>}</td>
                     <td className="max-w-44 px-2.5 py-2.5">

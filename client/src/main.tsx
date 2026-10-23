@@ -2,7 +2,7 @@ import { StrictMode, Suspense, lazy, useEffect, useState, type ReactNode } from 
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import '@fontsource-variable/plus-jakarta-sans';
+import '@fontsource-variable/lexend';
 import './index.css';
 import { AuthProvider, LiveProvider, ToastProvider, useAuth, useTheme } from './lib/context';
 import Layout, { LogoMark } from './components/Layout';
