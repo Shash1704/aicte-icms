@@ -27,14 +27,14 @@ const INIT = () => {
     if (document.getElementById('__cursor')) return;
     const st = document.createElement('style');
     st.textContent = `
-      #__cursor{position:fixed;left:0;top:0;width:26px;height:26px;z-index:2147483647;pointer-events:none;transform:translate(-3px,-2px)}
+      #__cursor{position:fixed;left:0;top:0;width:30px;height:30px;z-index:2147483647;pointer-events:none;transform:translate(-3px,-2px)}
       #__cursor svg{filter:drop-shadow(0 2px 5px rgba(0,0,0,.7))}
       .__ripple{position:fixed;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2px solid #ececec;z-index:2147483646;pointer-events:none;animation:__rip .55s ease-out forwards}
       @keyframes __rip{from{transform:scale(.3);opacity:1}to{transform:scale(1.4);opacity:0}}
       #__hl{position:fixed;z-index:2147483645;pointer-events:none;border:2px solid #ececec;border-radius:12px;box-shadow:0 0 0 9999px rgba(0,0,0,.42),0 0 30px rgba(255,255,255,.25);opacity:0;transition:opacity .25s,left .35s,top .35s,width .35s,height .35s}
       #__card{position:fixed;inset:0;z-index:2147483640;background:radial-gradient(120% 90% at 50% 0%,#2c2c2f 0%,#121213 100%);color:#ececec;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .45s;pointer-events:none;font-family:"Jost Variable","Jost",system-ui,sans-serif}
       #__card.on{opacity:1}
-      #__card .wrap{width:min(1180px,86vw)}
+      #__card .wrap{width:min(1180px,70vw);zoom:1.25}
       #__card .eyebrow{font-size:14px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:#8a8a90}
       #__card h1{font-size:62px;line-height:1.08;font-weight:700;margin:20px 0 0;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 8px 30px rgba(0,0,0,.6)}
       #__card .soft{color:#8a8a90}
@@ -47,13 +47,13 @@ const INIT = () => {
       #__card li .n{flex:none;font-size:14px;letter-spacing:.2em;color:#8a8a90}
       #__card .mark{font-size:22px;font-weight:700;letter-spacing:.2em;line-height:1.05}
       #__card .link{margin-top:30px;display:inline-block;background:#19191b;border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 34px -14px rgba(0,0,0,.95);color:#ececec;font-size:32px;font-weight:600;letter-spacing:.06em;border-radius:6px;padding:18px 34px}
-      #__chip{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2147483639;background:#19191b;color:#ececec;border:1px solid rgba(255,255,255,.1);box-shadow:0 14px 30px -12px rgba(0,0,0,.9);border-radius:6px;padding:9px 18px;font:500 13px "Jost Variable",system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:14px;opacity:0;transition:opacity .35s;pointer-events:none}
+      #__chip{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2147483639;background:#19191b;color:#ececec;border:1px solid rgba(255,255,255,.1);box-shadow:0 14px 30px -12px rgba(0,0,0,.9);border-radius:6px;padding:9px 18px;font:500 13px "Jost Variable",system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:14px;opacity:0;transition:opacity .35s;pointer-events:none;zoom:1.2}
       #__chip b{color:#8a8a90;font-weight:500}
       html.__carding #__cursor{opacity:0}`;
     document.documentElement.appendChild(st);
     const c = document.createElement('div');
     c.id = '__cursor';
-    c.innerHTML = '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M4 2l15 9.5-6.6 1.4L9.8 20z" fill="#fff" stroke="#141414" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+    c.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24"><path d="M4 2l15 9.5-6.6 1.4L9.8 20z" fill="#fff" stroke="#141414" stroke-width="1.6" stroke-linejoin="round"/></svg>';
     document.documentElement.appendChild(c);
     const pos = window.__pos || { x: innerWidth / 2, y: innerHeight / 2 };
     c.style.left = pos.x + 'px'; c.style.top = pos.y + 'px';
@@ -73,7 +73,9 @@ const MARK = '<div class="mark">IC<br>MS</div>';
 // ---------------- runner ----------------
 const browser = await chromium.launch();
 const ctx = await browser.newContext({
-  viewport: { width: 1536, height: 864 }, deviceScaleFactor: 1.25,
+  // The recorder only shrinks pages to fit, never enlarges: the viewport must match the video size,
+  // or the page sits in the top-left corner with a grey border around it.
+  viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1,
   recordVideo: { dir: OUT, size: { width: 1920, height: 1080 } },
 });
 await ctx.addInitScript(INIT);
@@ -165,7 +167,7 @@ async function signInAs(text) {
 await page.goto(URL);
 await page.locator('button', { hasText: 'Chairman (Competent Authority)' }).waitFor({ timeout: 120000 });
 await ensure();
-await page.mouse.move(1100, 470);
+await page.mouse.move(1380, 590);
 t0 = Date.now();
 fs.writeFileSync(path.join(OUT, 'trim.txt'), String((t0 - videoStart) / 1000));
 
