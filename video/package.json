@@ -1,0 +1,10 @@
+{
+  "name": "aicte-icms-video",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tooling to record the demo video: scripted browser run of the live prototype, synced to the speakers' audio",
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}

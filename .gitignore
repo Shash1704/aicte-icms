@@ -10,3 +10,7 @@ client/dist-demo/
 # Submission documents are kept out of the public repo
 *.pptx
 Varangians_*.pdf
+# Demo video renders and source audio
+*.mp4
+*.mpeg
+*.srt
